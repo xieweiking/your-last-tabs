@@ -1,0 +1,8 @@
+{
+    "extensionName": { "message": "Your Last Tabs" },
+    "extensionDescription": { "message": "Your Last Tabs, blah blah blah..." },
+    "extensionToolTip": { "message": "You have unfinished tabs last time." },
+    "noMoreTab": { "message": "No More Tab" },
+    "clearAllButtonLabel": { "message": "CLEAR ALL RECORDS" },
+    "closeButtonTooltip": { "message": "Remove this record." }
+}

@@ -1,0 +1,108 @@
+@import url('widgets.css'); /* TODO chrome://resources/css/ */
+
+html, body, h3, ul, li, div {
+    width: 240px;
+    padding: 0px;
+    margin: 0px;
+    cursor: default;
+    font-family: Verdana, Arial, Helvetica, 'Microsoft YaHei', Simsun;
+    background-color: #FFF;
+    -webkit-user-select: none;
+}
+
+li {
+    list-style: none;
+    width: 216px;
+    display: block;
+    padding: 0px 4px;
+}
+
+li:nth-child(odd) {
+    background-color: #F0F0F0;
+}
+
+li:hover {
+    background-color: #EDF6FD;
+}
+
+img.icon {
+    vertical-align: text-bottom;
+    display: inline-block;
+    margin-right: 4px;
+}
+
+a {
+    text-decoration: none;
+    font-family: Verdana, Arial, Helvetica, 'Microsoft YaHei', Simsun;
+    display: inline-block;
+    -webkit-user-select: none;
+}
+
+a.link {
+    width: 176px;
+    color: #666;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+a.link:hover {
+    text-decoration: underline;
+    color: #5495D5;
+}
+
+a.close-btn {
+    width: 18px;
+    text-align: center;
+    visibility: hidden;
+    color: #BF3434;
+}
+
+a.close-btn:hover {
+    color: red;
+}
+
+li.item:hover a.close-btn {
+    visibility: visible;
+}
+
+li.item:first-child {
+    margin-top: 4px;
+}
+
+li.item:last-child {
+    margin-bottom: 1px;
+}
+
+button.clear-all-btn {
+    font-size: 12px !important;
+    height: 24px !important;
+    line-height: 24px !important;
+    text-align: center !important;
+    width: 224px !important;
+    padding: 0px !important;
+    margin: 2px 8px 8px !important;
+    display: block !important;
+}
+
+#head, #list {
+    font-weight: normal;
+    display: block;
+    padding: 0px;
+}
+
+#head {
+    font-size: 16px;
+    margin: 4px 8px;
+}
+
+#list {
+    line-height: 22px;
+    font-size: 14px;
+    margin: 0px 8px;
+}
+
+#clear-all {
+    margin: 0px;
+    padding: 0px;
+}
