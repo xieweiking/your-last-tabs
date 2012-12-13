@@ -1,4 +1,4 @@
-@import url('widgets.css'); /* TODO chrome://resources/css/ */
+@import url(widgets.css); /* FIXME chrome://resources/css/ */
 
 html, body, h3, ul, li, div {
     width: 240px;

@@ -1,6 +1,6 @@
 {
     "name": "__MSG_extensionName__",
-    "version": "0.0.1",
+    "version": "0.0.2",
 
     "description": "__MSG_extensionDescription__",
     "icons": {
@@ -16,8 +16,15 @@
         "default_popup": "page/popup.html"
     },
     "background": {
-        "scripts": [ "script/array.js", "script/background.js" ]
+        "scripts": [ "script/array.js", "script/common.js", "script/background.js" ]
     },
+    "content_scripts": [
+        {
+            "js": [ "script/content.js" ],
+            "matches": [ "http://*/*", "https://*/*", "file://*/*" ],
+            "run_at": "document_start"
+        }
+    ],
 
     "permissions": [
         "chrome://favicon/",
