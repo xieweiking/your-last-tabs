@@ -53,6 +53,33 @@
             save_all_windows_tabs();
         });
     }
+    function dom_class_each(clazz, fn) {
+        Array.prototype.forEach.call(document.getElementsByClassName(clazz), fn);
+    }
+    function dom_class_add_listener(clazz, event_type, fn, capture) {
+        dom_class_each(clazz, function (dom) {
+            dom.addEventListener(event_type, fn, capture);
+        });
+    }
+    function click_link(event) {
+        var url = event.target.href;
+        if (event.button === 0 && !IN_BLANK) {
+            event.preventDefault();
+            chrome.tabs.getSelected(null, function (tab) {
+                if (tab.url == NEWTAB.url) {
+                    chrome.tabs.update(tab.id, { url: url });
+                }
+                else {
+                    chrome.tabs.create({ url: url, selected: true });
+                }
+            });
+        }
+        else if (event.button === 1 || IN_BLANK) {
+            event.preventDefault();
+            chrome.tabs.create({ url: url, selected: false });
+        }
+        remove_item(event);
+    }
     chrome.storage.local.get(function (items) {
         if (has_last_tabs(items)) {
             var LAST_TABS = items.KEY_YOUR_LAST_TABS;
@@ -72,25 +99,9 @@
             list.innerHTML = builder.join('');
             clear_all_button_template[1] = chrome.i18n.getMessage('clearAllButtonLabel');
             clear_all.innerHTML = clear_all_button_template.join('');
-
-            var close_buttons = document.getElementsByClassName('close-btn');
-            for (var i = 0; i < close_buttons.length; ++i) {
-                close_buttons[i].addEventListener('click', remove_item);
-            }
-            var links = document.getElementsByClassName('link');
-            for (var i = 0; i < links.length; ++i) {
-                links[i].addEventListener('click', function (event) {
-                    if (event.button === 0 && !IN_BLANK) {
-                        event.preventDefault();
-                        chrome.tabs.getSelected(null, function (tab) {
-                            chrome.tabs.update(tab.id, { url: event.target.href });
-                        });
-                    }
-                    remove_item(event);
-                });
-            }
-            document.getElementsByClassName('clear-all-btn')[0]
-                    .addEventListener('click', remove_all_items);
+            dom_class_add_listener('close-btn', 'click', remove_item);
+            dom_class_add_listener('link', 'click', click_link);
+            dom_class_add_listener('clear-all-btn', 'click', remove_all_items);
         }
         else {
             show_no_more_tab();

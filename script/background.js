@@ -1,24 +1,53 @@
 (function () {
-    chrome.storage.sync.get(function (items) {
-        chrome.storage.local.set({ KEY_YOUR_LAST_TABS: (has_last_tabs(items) ? items.KEY_YOUR_LAST_TABS : []) });
-    });
-    chrome.tabs.onUpdated.addListener(function (id, info, tab) {
+    function show_page_action(tab) {
         var tab_id = tab.id;
-        if (is_newtab(tab)) {
+        if (ALWAYS_APPEAR || is_newtab(tab)) {
             chrome.storage.local.get(function (items) {
                 if (has_last_tabs(items)) {
                     chrome.pageAction.show(tab_id);
+                }
+                else {
+                    chrome.pageAction.hide(tab_id);
                 }
             });
         }
         else {
             chrome.pageAction.hide(tab_id);
         }
+    }
+    chrome.storage.sync.get(function (items) {
+        chrome.storage.local.set({ KEY_YOUR_LAST_TABS: (has_last_tabs(items) ? items.KEY_YOUR_LAST_TABS : []) });
+    });
+    chrome.tabs.onUpdated.addListener(function (tab_id, change_info, tab) {
+        show_page_action(tab);
         save_all_windows_tabs();
     });
     chrome.tabs.onRemoved.addListener(function (tab_id, remove_info) {
         save_all_windows_tabs();
     });
+    chrome.tabs.onActivated.addListener(function (active_info) {
+        chrome.tabs.get(active_info.tabId, show_page_action);
+    });
+    if (STANDING) {
+        chrome.extension.onRequest.addListener(function (request, sender) {
+            var ALL_TABS = {};
+            if (request.standing) {
+                chrome.tabs.query(ALL_TABS, function (tabs) {
+                    if (tabs.length <= 1) {
+                        chrome.tabs.create(NEWTAB, function (tab) {
+                            setTimeout(function () {
+                                chrome.tabs.query(ALL_TABS, function (ts) {
+                                    if (ts.length > 1) {
+                                        chrome.tabs.remove(tab.id);
+                                    }
+                                });
+                            }, 50);
+                        });
+                    }
+                });
+            }
+        });
+    }
     var scaner_id = null;
     scaner_id = setInterval(function () {
         chrome.storage.local.get(function (items) {
@@ -40,37 +69,18 @@
                     }
                 });
             }
-            else if (scaner_id != null) {
+            else if (scaner_id !== null) {
                 clearInterval(scaner_id);
             }
         });
     }, 1000);
-    setTimeout(function () { // this is a hack of loading the page_action immediately.
-        chrome.storage.local.get(function (items) {
-            if (has_last_tabs(items)) {
-                chrome.tabs.getSelected(null, function (tab) {
-                    if (is_newtab(tab)) {
-                        chrome.tabs.reload(tab.id);
-                    }
-                });
+    var show_intrvl = null;
+    show_intrvl = setInterval(function () {
+        chrome.tabs.getSelected(null, function (tab) {
+            show_page_action(tab);
+            if (show_intrvl !== null) {
+                clearInterval(show_intrvl);
             }
         });
-    }, 800);
-    chrome.extension.onRequest.addListener(function (request, sender) {
-        if (request.create_newtab && sender.tab.url != NEWTAB_URL) {
-            chrome.tabs.query({}, function(tabs) {
-                if (tabs.length <= 1) {
-                    chrome.tabs.create(NEWTAB, function(t) {
-                        setTimeout(function () {
-                            chrome.tabs.query({}, function (ts) {
-                                if (ts.length > 1) {
-                                    chrome.tabs.remove(t.id);
-                                }
-                            });
-                        }, 50);
-                    });
-                }
-            });
-        }
-    });
+    }, 600);
 })();
