@@ -29,8 +29,7 @@
     "permissions": [
         "chrome://favicon/",
         "tabs",
-        "storage",
-        "webNavigation"
+        "storage"
     ],
 
     "web_accessible_resources": [

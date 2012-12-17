@@ -29,11 +29,11 @@
         chrome.tabs.get(active_info.tabId, show_page_action);
     });
     if (STANDING) {
-        chrome.extension.onRequest.addListener(function (request, sender) {
+        chrome.extension.onMessage.addListener(function (request, sender/*, sendResponse*/) {
             var ALL_TABS = {};
             if (request.standing) {
                 chrome.tabs.query(ALL_TABS, function (tabs) {
-                    if (tabs.length <= 1) {
+                    if (tabs.length < 2) {
                         chrome.tabs.create(NEWTAB, function (tab) {
                             setTimeout(function () {
                                 chrome.tabs.query(ALL_TABS, function (ts) {
@@ -41,7 +41,7 @@
                                         chrome.tabs.remove(tab.id);
                                     }
                                 });
-                            }, 50);
+                            }, 30);
                         });
                     }
                 });
