@@ -1,6 +1,6 @@
 {
     "name": "__MSG_extensionName__",
-    "version": "0.0.7",
+    "version": "0.1.0",
 
     "description": "__MSG_extensionDescription__",
     "icons": {
@@ -25,6 +25,7 @@
             "run_at": "document_start"
         }
     ],
+    "options_page": "page/options.html",
 
     "permissions": [
         "chrome://favicon/",

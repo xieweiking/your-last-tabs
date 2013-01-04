@@ -4,5 +4,14 @@
     "extensionToolTip": { "message": "You have unfinished tabs last time." },
     "noMoreTab": { "message": "No More Tab" },
     "clearAllButtonLabel": { "message": "CLEAR ALL RECORDS" },
-    "closeButtonTooltip": { "message": "Remove this record." }
+    "closeButtonTooltip": { "message": "Remove this record." },
+    "optionName": { "message": "Options" },
+    "optionYes": { "message": "Yes" },
+    "optionNo": { "message": "No" },
+    "optionMaxRecordCountLabel": { "message": "Max Record Count" },
+    "optionInBlankLabel": { "message": "Open In New Tab" },
+    "optionStanding": { "message": "Keep Standing" },
+    "optionAlwaysAppear": { "message": "Always Show Icon" },
+    "optionSave": { "message": "Save" },
+    "optionOK": { "message": "OK" }
 }

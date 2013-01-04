@@ -1,4 +1,4 @@
-var CHROME_INNER_URL_PATTERN = /^chrome\:\/\/.+/;
+var CHROME_INNER_URL_PATTERN = /^chrome(-.+)?\:\/\/.+/;
 var NEWTAB = { url: 'chrome://newtab/', selected : false };
 var NOT_PINED_TABS = { pinned: false };
 
@@ -22,27 +22,29 @@ function save_all_windows_tabs() {
                 url_map[url] = true;
             }
         });
-        var diff = current_tabs.length - MAX_RECORD_COUNT;
-        if (diff == 0) {
-            chrome.storage.sync.set({ KEY_YOUR_LAST_TABS: current_tabs });
-        }
-        else if (diff > 0) {
-            chrome.storage.sync.set({ KEY_YOUR_LAST_TABS: current_tabs.slice(diff, current_tabs.length) });
-        }
-        else {
-            chrome.storage.local.get(function (items) {
-                if (has_last_tabs(items)) {
-                    var legacy_tabs = items.KEY_YOUR_LAST_TABS;
-                    diff = current_tabs.length + legacy_tabs.length - MAX_RECORD_COUNT;
-                    if (diff <= 0) {
-                        current_tabs.push.apply(current_tabs, legacy_tabs);
-                    }
-                    else if (diff < legacy_tabs.length) {
-                        current_tabs.push.apply(current_tabs, legacy_tabs.slice(diff, legacy_tabs.length));
-                    }
-                }
+        get_options(function (options) {
+            var diff = current_tabs.length - options.MAX_RECORD_COUNT;
+            if (diff == 0) {
                 chrome.storage.sync.set({ KEY_YOUR_LAST_TABS: current_tabs });
-            });
-        }
+            }
+            else if (diff > 0) {
+                chrome.storage.sync.set({ KEY_YOUR_LAST_TABS: current_tabs.slice(diff, current_tabs.length) });
+            }
+            else {
+                chrome.storage.local.get(function (items) {
+                    if (has_last_tabs(items)) {
+                        var legacy_tabs = items.KEY_YOUR_LAST_TABS;
+                        diff = current_tabs.length + legacy_tabs.length - options.MAX_RECORD_COUNT;
+                        if (diff <= 0) {
+                            current_tabs.push.apply(current_tabs, legacy_tabs);
+                        }
+                        else if (diff < legacy_tabs.length) {
+                            current_tabs.push.apply(current_tabs, legacy_tabs.slice(diff, legacy_tabs.length));
+                        }
+                    }
+                    chrome.storage.sync.set({ KEY_YOUR_LAST_TABS: current_tabs });
+                });
+            }
+        });
     });
 }

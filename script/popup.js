@@ -63,22 +63,23 @@
     }
     function click_link(event) {
         var url = event.target.href;
-        if (event.button === 0 && !IN_BLANK) {
-            event.preventDefault();
-            chrome.tabs.getSelected(null, function (tab) {
-                if (tab.url == NEWTAB.url) {
-                    chrome.tabs.update(tab.id, { url: url });
-                }
-                else {
-                    chrome.tabs.create({ url: url, selected: true });
-                }
-            });
-        }
-        else if (event.button === 1 || IN_BLANK) {
-            event.preventDefault();
-            chrome.tabs.create({ url: url, selected: false });
-        }
-        remove_item(event);
+        event.preventDefault();
+        get_options(function (options) {
+            if (event.button === 0 && !options.IN_BLANK) {
+                chrome.tabs.getSelected(null, function (tab) {
+                    if (tab.url == NEWTAB.url) {
+                        chrome.tabs.update(tab.id, { url: url });
+                    }
+                    else {
+                        chrome.tabs.create({ url: url, selected: true });
+                    }
+                });
+            }
+            else if (event.button === 1 || options.IN_BLANK) {
+                chrome.tabs.create({ url: url, selected: false });
+            }
+            remove_item(event);
+        });
     }
     chrome.storage.local.get(function (items) {
         if (has_last_tabs(items)) {

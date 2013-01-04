@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link href="../style/options.css" rel="stylesheet" type="text/css" />
+    <title></title>
+</head>
+<body>
+    <div id="options-pane">
+        <h3 id="extension-name"></h3>
+        <img id="logo" src="../image/icon128.png" />
+        <table id="options-table">
+            <tr>
+                <td class="label-cell"><label id="max-record-count-label" for="max-record-count-field"></label></td>
+                <td class="value-cell"><input id="max-record-count-field" type="number" min="10" max="1000" /></td>
+            </tr>
+            <tr>
+                <td class="label-cell"><label id="in-blank-label"></label></td>
+                <td class="value-cell">
+                    <input name="in-blank-radio" id="in-blank-true-radio" type="radio" value="true" />
+                    <label class="yes-label" id="in-blank-true-label" for="in-blank-true-radio"></label>
+                    <input name="in-blank-radio" id="in-blank-false-radio" type="radio" value="false" />
+                    <label id="in-blank-false-label" for="in-blank-false-radio"></label>
+                </td>
+            </tr>
+            <tr>
+                <td class="label-cell"><label id="always-appear-label"></label></td>
+                <td class="value-cell">
+                    <input name="always-appear-radio" id="always-appear-true-radio" type="radio" value="true" />
+                    <label class="yes-label" id="always-appear-true-label" for="always-appear-true-radio"></label>
+                    <input name="always-appear-radio" id="always-appear-false-radio" type="radio" value="false" />
+                    <label id="always-appear-false-label" for="always-appear-false-radio"></label>
+                </td>
+            </tr>
+            <tr>
+                <td class="label-cell"><label id="standing-label"></label></td>
+                <td class="value-cell">
+                    <input name="standing-radio" id="standing-true-radio" type="radio" value="true" />
+                    <label class="yes-label" id="standing-true-label" for="standing-true-radio"></label>
+                    <input name="standing-radio" id="standing-false-radio" type="radio" value="false" />
+                    <label id="standing-false-label" for="standing-false-radio"></label>
+                </td>
+            </tr>
+        </table>
+        <button id="save-button" type="button"></button>
+    </div>
+    <script src="../script/options.js" type="text/javascript"></script>
+    <script src="../script/options_page.js" type="text/javascript"></script>
+</body>
+</html>
