@@ -74,15 +74,26 @@ li.item:last-child {
     margin-bottom: 1px;
 }
 
-button.clear-all-btn {
+button.clear-all-btn, button.open-all-btn {
     font-size: 12px !important;
-    height: 24px !important;
-    line-height: 24px !important;
-    text-align: center !important;
-    width: 224px !important;
-    padding: 0px !important;
-    margin: 2px 8px 8px !important;
-    display: block !important;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    width: 110px;
+    padding: 0px;
+    margin-top: 4px !important;
+    margin-bottom: 8px !important;
+    display: inline-block;
+}
+
+button.open-all-btn {
+    margin-left: 8px !important;
+    margin-right: 2px !important;
+}
+
+button.clear-all-btn {
+    margin-left: 2px !important;
+    margin-right: 8px !important;
 }
 
 #head, #list {

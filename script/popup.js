@@ -11,6 +11,11 @@
             '<a class="close-btn" href="javascript:void(0);" title="', null/*12*/, '">×</a>',
         '</li>'
     ];
+    var open_all_button_template = [
+        '<button class="open-all-btn" type="button">',
+            null/*1*/,
+        '</button>'
+   ];
     var clear_all_button_template = [
         '<button class="clear-all-btn" type="button">',
             null/*1*/,
@@ -45,6 +50,17 @@
             setTimeout(function () {
                 chrome.pageAction.hide(tab.id);
             }, 300);
+        });
+    }
+    function open_all_links() {
+        chrome.storage.local.get(function (items) {
+            if (has_last_tabs(items)) {
+                var LAST_TABS = items.KEY_YOUR_LAST_TABS;
+                LAST_TABS.forEach(function (link) {
+                    chrome.tabs.create({ url: link.url, selected: false });
+                });
+                remove_all_items();
+            }
         });
     }
     function remove_all_items() {
@@ -98,10 +114,12 @@
                 builder.push(li_template.join(''));
             });
             list.innerHTML = builder.join('');
+            open_all_button_template[1] = chrome.i18n.getMessage('openAllButtonLabel');
             clear_all_button_template[1] = chrome.i18n.getMessage('clearAllButtonLabel');
-            clear_all.innerHTML = clear_all_button_template.join('');
+            clear_all.innerHTML = open_all_button_template.join('') + clear_all_button_template.join('');
             dom_class_add_listener('close-btn', 'click', remove_item);
             dom_class_add_listener('link', 'click', click_link);
+            dom_class_add_listener('open-all-btn', 'click', open_all_links);
             dom_class_add_listener('clear-all-btn', 'click', remove_all_items);
         }
         else {
