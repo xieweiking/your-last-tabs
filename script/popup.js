@@ -60,6 +60,11 @@
                     chrome.tabs.create({ url: link.url, selected: false });
                 });
                 remove_all_items();
+                chrome.tabs.getSelected(null, function (tab) {
+                    if (tab.url == NEWTAB.url) {
+                        chrome.tabs.remove(tab.id);
+                    }
+                });
             }
         });
     }
