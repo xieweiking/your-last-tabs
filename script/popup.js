@@ -15,7 +15,7 @@
         '<button class="open-all-btn" type="button">',
             null/*1*/,
         '</button>'
-   ];
+    ];
     var clear_all_button_template = [
         '<button class="clear-all-btn" type="button">',
             null/*1*/,
@@ -69,6 +69,7 @@
         });
     }
     function remove_all_items() {
+        remove_positions_not_opened();
         chrome.storage.local.set({ KEY_YOUR_LAST_TABS: [] }, function () {
             show_no_more_tab();
             save_all_windows_tabs();

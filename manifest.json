@@ -1,6 +1,6 @@
 {
     "name": "__MSG_extensionName__",
-    "version": "0.1.2",
+    "version": "0.1.3",
 
     "description": "__MSG_extensionDescription__",
     "icons": {
@@ -20,7 +20,7 @@
     },
     "content_scripts": [
         {
-            "js": [ "script/options.js", "script/content.js" ],
+            "js": [ "script/options.js", "script/functions.js", "script/content.js" ],
             "matches": [ "http://*/*", "https://*/*", "file://*/*" ],
             "run_at": "document_start"
         }

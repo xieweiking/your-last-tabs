@@ -23,4 +23,15 @@
             }, 30);
         }
     });
+    window.addEventListener('load', function () {
+        get_position(location.href, function (pos) {
+            var b = document.body;
+            b.scrollTop = pos.top;
+            b.scrollLeft = pos.left;
+        });
+    });
+    window.addEventListener('scroll', function () {
+        var b = document.body;
+        set_position(location.href, { top: b.scrollTop, left: b.scrollLeft });
+    });
 })();
