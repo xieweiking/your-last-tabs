@@ -15,6 +15,15 @@ function is_url_ok(url) {
     return url != null && url != '' && !CHROME_INNER_URL_PATTERN.test(url);
 }
 
+function tabs_contain_url(tabs, url) {
+    for (var i = 0; i < tabs.length; ++i) {
+        if (tabs[i].url === url) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function save_all_windows_tabs() {
     chrome.tabs.query(NOT_PINED_TABS, function (tabs) {
         var current_tabs = [];
@@ -29,28 +38,49 @@ function save_all_windows_tabs() {
         });
         get_options(function (options) {
             var diff = current_tabs.length - options.MAX_RECORD_COUNT;
-            if (diff == 0) {
+            var legacy_tabs = [];
+            if (diff >= 0) {
+                if (diff > 0) {
+                    current_tabs = current_tabs.slice(diff, current_tabs.length);
+                }
                 chrome.storage.sync.set({ KEY_YOUR_LAST_TABS: current_tabs });
-            }
-            else if (diff > 0) {
-                chrome.storage.sync.set({ KEY_YOUR_LAST_TABS: current_tabs.slice(diff, current_tabs.length) });
+                remove_useless_positions(url_map, legacy_tabs);
             }
             else {
                 chrome.storage.local.get(function (items) {
                     if (has_last_tabs(items)) {
-                        var legacy_tabs = items.KEY_YOUR_LAST_TABS;
+                        legacy_tabs = items.KEY_YOUR_LAST_TABS;
                         diff = current_tabs.length + legacy_tabs.length - options.MAX_RECORD_COUNT;
-                        if (diff <= 0) {
+                        if (diff < legacy_tabs.length) {
+                            if (diff > 0) {
+                                legacy_tabs = legacy_tabs.slice(diff, legacy_tabs.length);
+                            }
                             current_tabs.push.apply(current_tabs, legacy_tabs);
-                        }
-                        else if (diff < legacy_tabs.length) {
-                            current_tabs.push.apply(current_tabs, legacy_tabs.slice(diff, legacy_tabs.length));
                         }
                     }
                     chrome.storage.sync.set({ KEY_YOUR_LAST_TABS: current_tabs });
+                    remove_useless_positions(url_map, legacy_tabs);
                 });
             }
         });
+    });
+}
+
+function remove_useless_positions(url_map, legacy_tabs) {
+    chrome.storage.sync.get(KEY_POSITIONS, function (items) {
+        var positions = items.KEY_POSITIONS;
+        if (positions !== null) {
+            var remove_count = 0;
+            for (var url in positions) {
+                if (positions[url] != null && !url_map[url] && !tabs_contain_url(legacy_tabs, url)) {
+                    delete positions[url];
+                    ++remove_count;
+                }
+            }
+            if (remove_count > 0) {
+                chrome.storage.sync.set({ KEY_POSITIONS: positions });
+            }
+        }
     });
 }
 
@@ -80,24 +110,5 @@ function set_position(url, pos) {
             delete positions[url];
         }
         chrome.storage.sync.set({ KEY_POSITIONS: positions });
-    });
-}
-
-function remove_positions_not_opened() {
-    chrome.storage.sync.get(KEY_POSITIONS, function (items) {
-        var positions = items.KEY_POSITIONS;
-        if (positions !== null) {
-            chrome.tabs.query(NOT_PINED_TABS, function (tabs) {
-                var copy = {};
-                tabs.forEach(function (tab) {
-                    var url = tab.url;
-                    var pos = positions[url];
-                    if (pos != null && is_url_ok(url)) {
-                        copy[url] = pos;
-                    }
-                });
-                chrome.storage.sync.set({ KEY_POSITIONS: copy });
-            });
-        }
     });
 }

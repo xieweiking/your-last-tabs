@@ -69,7 +69,6 @@
         });
     }
     function remove_all_items() {
-        remove_positions_not_opened();
         chrome.storage.local.set({ KEY_YOUR_LAST_TABS: [] }, function () {
             show_no_more_tab();
             save_all_windows_tabs();
