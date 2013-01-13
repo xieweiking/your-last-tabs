@@ -47,7 +47,7 @@
                                             chrome.tabs.remove(tab.id);
                                         }
                                     });
-                                }, 80);
+                                }, 120);
                             });
                         }
                     });

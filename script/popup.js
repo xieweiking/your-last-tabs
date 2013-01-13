@@ -11,14 +11,12 @@
             '<a class="close-btn" href="javascript:void(0);" title="', null/*12*/, '">×</a>',
         '</li>'
     ];
-    var open_all_button_template = [
+    var buttons_template = [
         '<button class="open-all-btn" type="button">',
             null/*1*/,
-        '</button>'
-    ];
-    var clear_all_button_template = [
+        '</button>',
         '<button class="clear-all-btn" type="button">',
-            null/*1*/,
+            null/*4*/,
         '</button>'
     ];
     function remove_item(event) {
@@ -119,9 +117,9 @@
                 builder.push(li_template.join(''));
             });
             list.innerHTML = builder.join('');
-            open_all_button_template[1] = chrome.i18n.getMessage('openAllButtonLabel');
-            clear_all_button_template[1] = chrome.i18n.getMessage('clearAllButtonLabel');
-            clear_all.innerHTML = open_all_button_template.join('') + clear_all_button_template.join('');
+            buttons_template[1] = chrome.i18n.getMessage('openAllButtonLabel');
+            buttons_template[4] = chrome.i18n.getMessage('clearAllButtonLabel');
+            clear_all.innerHTML = buttons_template.join('');
             dom_class_add_listener('close-btn', 'click', remove_item);
             dom_class_add_listener('link', 'click', click_link);
             dom_class_add_listener('open-all-btn', 'click', open_all_links);
