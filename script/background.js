@@ -18,7 +18,10 @@
         });
     }
     chrome.storage.sync.get(function (items) {
-        chrome.storage.local.set({ KEY_YOUR_LAST_TABS: (has_last_tabs(items) ? items.KEY_YOUR_LAST_TABS : []) });
+        chrome.storage.local.set({
+            KEY_YOUR_LAST_TABS: (has_last_tabs(items) ? items.KEY_YOUR_LAST_TABS : []),
+            KEY_POSITIONS: (items.KEY_POSITIONS != null ? items.KEY_POSITIONS : {})
+        });
     });
     chrome.tabs.onUpdated.addListener(function (tab_id, change_info, tab) {
         show_page_action(tab);
@@ -44,7 +47,7 @@
                                             chrome.tabs.remove(tab.id);
                                         }
                                     });
-                                }, 50);
+                                }, 80);
                             });
                         }
                     });

@@ -67,7 +67,7 @@ function save_all_windows_tabs() {
 }
 
 function remove_useless_positions(url_map, legacy_tabs) {
-    chrome.storage.sync.get(KEY_POSITIONS, function (items) {
+    chrome.storage.local.get(KEY_POSITIONS, function (items) {
         var positions = items.KEY_POSITIONS;
         if (positions !== null) {
             var remove_count = 0;
@@ -78,8 +78,9 @@ function remove_useless_positions(url_map, legacy_tabs) {
                 }
             }
             if (remove_count > 0) {
-                chrome.storage.sync.set({ KEY_POSITIONS: positions });
+                chrome.storage.local.set({ KEY_POSITIONS: positions });
             }
+            chrome.storage.sync.set({ KEY_POSITIONS: positions });
         }
     });
 }
@@ -89,7 +90,7 @@ function is_position_valid(pos) {
 }
 
 function get_position(url, callback) {
-    chrome.storage.sync.get(KEY_POSITIONS, function (items) {
+    chrome.storage.local.get(KEY_POSITIONS, function (items) {
         var positions = items.KEY_POSITIONS;
         if (positions !== null) {
             var pos = positions[url];
@@ -101,7 +102,7 @@ function get_position(url, callback) {
 }
 
 function set_position(url, pos) {
-    chrome.storage.sync.get(function (items) {
+    chrome.storage.local.get(KEY_POSITIONS, function (items) {
         var positions = items.KEY_POSITIONS || {};
         if (is_position_valid(pos)) {
             positions[url] = pos;
@@ -109,6 +110,6 @@ function set_position(url, pos) {
         else {
             delete positions[url];
         }
-        chrome.storage.sync.set({ KEY_POSITIONS: positions });
+        chrome.storage.local.set({ KEY_POSITIONS: positions });
     });
 }
