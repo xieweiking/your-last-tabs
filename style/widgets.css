@@ -304,3 +304,10 @@ input:disabled:-webkit-any([type='password'],
 label > input:disabled:-webkit-any([type='checkbox'], [type='radio']) ~ span {
   color: #999;
 }
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-button:start:decrement,
+::-webkit-scrollbar-button:end:increment { display: block; height: 0; width: 0; background-color: transparent; }
+::-webkit-scrollbar-track-piece { -webkit-border-radius: 0; -webkit-border-bottom-right-radius: 2px; -webkit-border-bottom-left-radius: 2px; }
+::-webkit-scrollbar-thumb:vertical { height: 50px; background-color: rgba(0, 0, 0, 0.3); -webkit-border-radius: 2px; }
+::-webkit-scrollbar-thumb:horizontal { width: 50px; background-color: rgba(0, 0, 0, 0.3); -webkit-border-radius: 2px; }

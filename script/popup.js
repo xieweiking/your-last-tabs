@@ -5,10 +5,10 @@
     var li_template = [
         '<li class="item" title="', null/*1*/, '">',
             '<img class="icon" src="chrome://favicon/', null/*4*/, '" />',
-            '<a class="link" target="_blank" href="', null/*7*/, '" >',
-                null/*9*/,
+            '<a class="link" target="_blank" href="', null/*7*/, '" data-position="', null/*9*/,'">',
+                null/*11*/,
             '</a>',
-            '<a class="close-btn" href="javascript:void(0);" title="', null/*12*/, '">×</a>',
+            '<a class="close-btn" href="javascript:void(0);" title="', null/*14*/, '">×</a>',
         '</li>'
     ];
     var buttons_template = [
@@ -21,7 +21,7 @@
     ];
     function remove_item(event) {
         var li = event.target.parentNode;
-        chrome.storage.local.get(function (items) {
+        chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (items) {
             if (has_last_tabs(items)) {
                 var LAST_TABS = items.KEY_YOUR_LAST_TABS;
                 var url = li.getElementsByClassName('link')[0].href;
@@ -51,15 +51,20 @@
         });
     }
     function open_all_links() {
-        chrome.storage.local.get(function (items) {
+        chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (items) {
             if (has_last_tabs(items)) {
                 var LAST_TABS = items.KEY_YOUR_LAST_TABS;
                 LAST_TABS.forEach(function (link) {
-                    chrome.tabs.create({ url: link.url, selected: false });
+                    var url = link.url;
+                    var pos = {};
+                    pos[url] = link.position;
+                    chrome.storage.local.set(pos, function () {
+                        chrome.tabs.create({ url: url, selected: false });
+                    });
                 });
                 remove_all_items();
                 chrome.tabs.getSelected(null, function (tab) {
-                    if (tab.url == NEWTAB.url) {
+                    if (is_newtab(tab)) {
                         chrome.tabs.remove(tab.id);
                     }
                 });
@@ -81,26 +86,31 @@
         });
     }
     function click_link(event) {
-        var url = event.target.href;
         event.preventDefault();
-        get_options(function (options) {
-            if (event.button === 0 && !options.IN_BLANK) {
-                chrome.tabs.getSelected(null, function (tab) {
-                    if (tab.url == NEWTAB.url) {
-                        chrome.tabs.update(tab.id, { url: url });
-                    }
-                    else {
-                        chrome.tabs.create({ url: url, selected: true });
-                    }
-                });
-            }
-            else if (event.button === 1 || options.IN_BLANK) {
-                chrome.tabs.create({ url: url, selected: false });
-            }
-            remove_item(event);
+        var a = event.target;
+        var url = a.href;
+        var pos = {};
+        pos[url] = JSON.parse(a.getAttribute('data-position'));
+        chrome.storage.local.set(pos, function () {
+            get_options(function (options) {
+                if (event.button === 0 && !options.IN_BLANK) {
+                    chrome.tabs.getSelected(null, function (tab) {
+                        if (is_newtab(tab)) {
+                            chrome.tabs.update(tab.id, { url: url });
+                        }
+                        else {
+                            chrome.tabs.create({ url: url, selected: true });
+                        }
+                    });
+                }
+                else if (event.button === 1 || options.IN_BLANK) {
+                    chrome.tabs.create({ url: url, selected: false });
+                }
+                remove_item(event);
+            });
         });
     }
-    chrome.storage.local.get(function (items) {
+    chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (items) {
         if (has_last_tabs(items)) {
             var LAST_TABS = items.KEY_YOUR_LAST_TABS;
             head.innerHTML = chrome.i18n.getMessage('extensionName');
@@ -109,11 +119,13 @@
             LAST_TABS.forEach(function (link) {
                 var url = link.url;
                 var title = link.title;
+                var pos = link.position;
                 li_template[1] = title;
                 li_template[4] = url;
                 li_template[7] = url;
-                li_template[9] = title;
-                li_template[12] = close_btn_tooltip;
+                li_template[9] = is_position_valid(pos) ? JSON.stringify(pos).replace(/"/g, '&quot;') : 'null';
+                li_template[11] = title;
+                li_template[14] = close_btn_tooltip;
                 builder.push(li_template.join(''));
             });
             list.innerHTML = builder.join('');

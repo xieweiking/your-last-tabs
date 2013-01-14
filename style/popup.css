@@ -12,7 +12,7 @@ html, body, h3, ul, li, div {
 
 li {
     list-style: none;
-    width: 216px;
+    width: auto;
     display: block;
     padding: 0px 4px;
 }
@@ -22,7 +22,7 @@ li:nth-child(odd) {
 }
 
 li:hover {
-    background-color: #EDF6FD;
+    background-color: #BBE1FE;
 }
 
 img.icon {
@@ -39,8 +39,8 @@ a {
 }
 
 a.link {
-    width: 176px;
-    color: #666;
+    width: 178px;
+    color: #555;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -48,7 +48,7 @@ a.link {
 
 a.link:hover {
     text-decoration: underline;
-    color: #5495D5;
+    color: #1688D8;
 }
 
 a.close-btn {
@@ -81,19 +81,17 @@ button.clear-all-btn, button.open-all-btn {
     text-align: center;
     width: 110px;
     padding: 0px;
-    margin-top: 4px !important;
-    margin-bottom: 8px !important;
+    margin: 8px !important;
+    margin-top: 6px !important;
     display: inline-block;
 }
 
 button.open-all-btn {
-    margin-left: 8px !important;
     margin-right: 2px !important;
 }
 
 button.clear-all-btn {
     margin-left: 2px !important;
-    margin-right: 8px !important;
 }
 
 #head, #list {
@@ -104,13 +102,23 @@ button.clear-all-btn {
 
 #head {
     font-size: 16px;
-    margin: 4px 8px;
+    margin: 8px;
+    margin-bottom: 6px;
+    text-shadow: rgba(50, 50, 50, .5) 1px 1px 4px;
 }
+
+#scroll-pane {
+	max-height: 528px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
 
 #list {
     line-height: 22px;
     font-size: 14px;
-    margin: 0px 8px;
+    max-width: 224px;
+    margin-left: 8px;
 }
 
 #clear-all {

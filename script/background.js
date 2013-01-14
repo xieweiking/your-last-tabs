@@ -2,8 +2,9 @@
     function show_page_action(tab) {
         var tab_id = tab.id;
         get_options(function (options) {
-            if (options.ALWAYS_APPEAR || is_newtab(tab)) {
-                chrome.storage.local.get(function (items) {
+            var url = tab.url;
+            if (OPTIONS_URL != url && (options.ALWAYS_APPEAR || CHROME_INNER_URL_PATTERN.test(url))) {
+                chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (items) {
                     if (has_last_tabs(items)) {
                         chrome.pageAction.show(tab_id);
                     }
@@ -18,10 +19,7 @@
         });
     }
     chrome.storage.sync.get(function (items) {
-        chrome.storage.local.set({
-            KEY_YOUR_LAST_TABS: (has_last_tabs(items) ? items.KEY_YOUR_LAST_TABS : []),
-            KEY_POSITIONS: (items.KEY_POSITIONS != null ? items.KEY_POSITIONS : {})
-        });
+        chrome.storage.local.set({ KEY_YOUR_LAST_TABS: (has_last_tabs(items) ? items.KEY_YOUR_LAST_TABS : []) });
     });
     chrome.tabs.onUpdated.addListener(function (tab_id, change_info, tab) {
         show_page_action(tab);
@@ -52,12 +50,15 @@
                         }
                     });
                 }
+                else if (request.save) {
+                    save_all_windows_tabs();
+                }
             });
         }
     });
     var scaner_id = null;
     scaner_id = setInterval(function () {
-        chrome.storage.local.get(function (items) {
+        chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (items) {
             if (has_last_tabs(items)) {
                 chrome.tabs.query({}, function (tabs) {
                     var LAST_TABS = items.KEY_YOUR_LAST_TABS;
