@@ -53,6 +53,7 @@ function save_all_windows_tabs() {
         check_id = setInterval(function () {
             if (check_id !== null && is_positions_ready(positions, current_tabs)) {
                 clearInterval(check_id);
+                check_id = null;
                 current_tabs.forEach(function (tab) {
                     tab.position = positions[tab.url];
                 });

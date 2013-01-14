@@ -33,7 +33,7 @@
     });
     get_options(function (options) {
         if (options.STANDING) {
-            chrome.extension.onMessage.addListener(function (request, sender/*, sendResponse*/) {
+            chrome.extension.onMessage.addListener(function (request, sender) {
                 var ALL_TABS = {};
                 if (request.standing) {
                     chrome.tabs.query(ALL_TABS, function (tabs) {
@@ -50,10 +50,12 @@
                         }
                     });
                 }
-                else if (request.save) {
-                    save_all_windows_tabs();
-                }
             });
+        }
+    });
+    chrome.extension.onMessage.addListener(function (request, sender) {
+        if (request.save) {
+            save_all_windows_tabs();
         }
     });
     var scaner_id = null;
