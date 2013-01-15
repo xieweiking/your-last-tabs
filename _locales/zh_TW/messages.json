@@ -14,5 +14,6 @@
     "optionStanding": { "message": "保持最後一個頁簽" },
     "optionAlwaysAppear": { "message": "總顯示文件夾圖標" },
     "optionSave": { "message": "保存" },
-    "optionOK": { "message": "成功" }
+    "optionOK": { "message": "成功" },
+    "optionArrange": { "message": "整理" }
 }

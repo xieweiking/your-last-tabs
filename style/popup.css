@@ -15,6 +15,7 @@ li {
     width: auto;
     display: block;
     padding: 0px 4px;
+    background-color: #FBFBFB;
 }
 
 li:nth-child(odd) {
@@ -66,14 +67,6 @@ li.item:hover a.close-btn {
     visibility: visible;
 }
 
-li.item:first-child {
-    margin-top: 4px;
-}
-
-li.item:last-child {
-    margin-bottom: 1px;
-}
-
 button.clear-all-btn, button.open-all-btn {
     font-size: 12px !important;
     height: 24px;
@@ -84,14 +77,24 @@ button.clear-all-btn, button.open-all-btn {
     margin: 8px !important;
     margin-top: 6px !important;
     display: inline-block;
+    opacity: 0.5;
 }
 
 button.open-all-btn {
     margin-right: 2px !important;
 }
 
+button.open-all-btn:hover {
+    opacity: 1.0;
+}
+
 button.clear-all-btn {
     margin-left: 2px !important;
+    color: #9E0000 !important;
+}
+
+button.clear-all-btn:hover {
+    opacity: 1.0;
 }
 
 #head, #list {
@@ -103,25 +106,39 @@ button.clear-all-btn {
 #head {
     font-size: 16px;
     margin: 8px;
-    margin-bottom: 6px;
     text-shadow: rgba(50, 50, 50, .5) 1px 1px 4px;
 }
 
-#scroll-pane {
-	max-height: 528px;
-	overflow-y: auto;
-	overflow-x: hidden;
+#arrange-pane {
+    color: #333;
+    font-size: 12px;
+    text-align: right;
+    float: right;
+    width: auto;
+    height: 20px;
+    line-height: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    opacity: 0.2;
 }
 
+#arrange-pane:hover {
+	opacity: 1.0;
+}
+
+#scroll-pane {
+    max-height: 528px;
+    overflow: hidden;
+    position: relative;
+}
+
+#scroll-pane:hover {
+    overflow-y: auto;
+}
 
 #list {
     line-height: 22px;
     font-size: 14px;
     max-width: 224px;
     margin-left: 8px;
-}
-
-#clear-all {
-    margin: 0px;
-    padding: 0px;
 }

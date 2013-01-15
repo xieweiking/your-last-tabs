@@ -4,6 +4,7 @@ var NOT_PINED_TABS = { pinned: false };
 var KEY_YOUR_LAST_TABS = 'KEY_YOUR_LAST_TABS';
 var GET_POSITION_INJECTION = { code: '({ top: document.body.scrollTop, left: document.body.scrollLeft })' };
 var OPTIONS_URL = chrome.extension.getURL('page/options.html');
+var EMPTY_STR = '';
 
 function is_newtab(tab) {
     return tab.url == NEWTAB.url;
@@ -14,7 +15,7 @@ function has_last_tabs(items) {
 }
 
 function is_url_ok(url) {
-    return url != null && url != '' && !CHROME_INNER_URL_PATTERN.test(url);
+    return url != null && url != EMPTY_STR && !CHROME_INNER_URL_PATTERN.test(url);
 }
 
 function is_position_valid(pos) {
@@ -41,7 +42,7 @@ function save_all_windows_tabs() {
             var url = tab.url;
             if (!url_map[url] && is_url_ok(url)) {
                 var title = tab.title;
-                current_tabs.push({ url: url, title: (title == null || title == '' ? url : title) });
+                current_tabs.push({ url: url, title: (title == null || title == EMPTY_STR ? url : title) });
                 url_map[url] = true;
                 chrome.tabs.executeScript(tab.id, GET_POSITION_INJECTION, function (ary) {
                     if (ary != null && ary.length > 0) {

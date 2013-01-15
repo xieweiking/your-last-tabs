@@ -1,7 +1,7 @@
 {
     "extensionName": { "message": "Your Last Tabs" },
     "extensionDescription": { "message": "Your Last Tabs, blah blah blah..." },
-    "extensionToolTip": { "message": "You have unfinished tabs last time." },
+    "extensionToolTip": { "message": "You have unfinished tabs last time.\nTips: Use mouse middle button to open in new tab" },
     "noMoreTab": { "message": "No More Tab" },
     "clearAllButtonLabel": { "message": "Clear All Records" },
     "openAllButtonLabel": { "message": "Open All Links" },
@@ -14,5 +14,6 @@
     "optionStanding": { "message": "Keep Standing" },
     "optionAlwaysAppear": { "message": "Always Show Icon" },
     "optionSave": { "message": "Save" },
-    "optionOK": { "message": "OK" }
+    "optionOK": { "message": "OK" },
+    "optionArrange": { "message": "Arrange" }
 }

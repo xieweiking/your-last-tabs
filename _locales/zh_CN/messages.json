@@ -14,5 +14,6 @@
     "optionStanding": { "message": "保持最后一个页签" },
     "optionAlwaysAppear": { "message": "总显示文件夹图标" },
     "optionSave": { "message": "保存" },
-    "optionOK": { "message": "成功" }
+    "optionOK": { "message": "成功" },
+    "optionArrange": { "message": "整理" }
 }

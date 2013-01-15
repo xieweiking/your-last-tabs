@@ -45,6 +45,7 @@
                                     }
                                 });
                             });
+                            for (var i = 0; i < 40000; ++i); // HACK: hold chrome as long as possible
                         }
                     });
                 }
