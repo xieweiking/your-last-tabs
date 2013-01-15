@@ -37,15 +37,13 @@
                 var ALL_TABS = {};
                 if (request.standing) {
                     chrome.tabs.query(ALL_TABS, function (tabs) {
-                        if (tabs.length < 2) {
-                            chrome.tabs.create(NEWTAB, function (tab) {
-                                setTimeout(function () {
-                                    chrome.tabs.query(ALL_TABS, function (ts) {
-                                        if (ts.length > 1) {
-                                            chrome.tabs.remove(tab.id);
-                                        }
-                                    });
-                                }, 120);
+                        if (tabs.length == 1 && !CHROME_INNER_URL_PATTERN.test(tabs[0].url)) {
+                            chrome.tabs.create(NEWTAB, function (t) {
+                                chrome.tabs.query(ALL_TABS, function (ts) {
+                                    if (ts.length > 1) {
+                                        chrome.tabs.remove(t.id);
+                                    }
+                                });
                             });
                         }
                     });

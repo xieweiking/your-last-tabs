@@ -16,6 +16,7 @@ function has_last_tabs(items) {
 function is_url_ok(url) {
     return url != null && url != '' && !CHROME_INNER_URL_PATTERN.test(url);
 }
+
 function is_position_valid(pos) {
     var typeNum = typeof(0);
     return pos != null && typeof(pos.top) == typeNum && typeof(pos.left) == typeNum;

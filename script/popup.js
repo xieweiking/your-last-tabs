@@ -85,6 +85,11 @@
             dom.addEventListener(event_type, fn, capture);
         });
     }
+    function dom_class_remove_listener(clazz, event_type, fn, capture) {
+        dom_class_each(clazz, function (dom) {
+            dom.removeEventListener(event_type, fn, capture);
+        });
+    }
     function click_link(event) {
         event.preventDefault();
         var a = event.target;
@@ -110,30 +115,33 @@
             });
         });
     }
+    var close_btn_tooltip = chrome.i18n.getMessage('closeButtonTooltip');
+    function build_list(last_tabs) {
+        var builder = [];
+        last_tabs.forEach(function (link) {
+            var url = link.url;
+            var title = link.title;
+            var pos = link.position;
+            li_template[1] = title;
+            li_template[4] = url;
+            li_template[7] = url;
+            li_template[9] = is_position_valid(pos) ? JSON.stringify(pos).replace(/"/g, '&quot;') : 'null';
+            li_template[11] = title;
+            li_template[14] = close_btn_tooltip;
+            builder.push(li_template.join(''));
+        });
+        list.innerHTML = builder.join('');
+        dom_class_add_listener('close-btn', 'click', remove_item);
+        dom_class_add_listener('link', 'click', click_link);
+    }
     chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (items) {
         if (has_last_tabs(items)) {
             var LAST_TABS = items.KEY_YOUR_LAST_TABS;
             head.innerHTML = chrome.i18n.getMessage('extensionName');
-            var close_btn_tooltip = chrome.i18n.getMessage('closeButtonTooltip');
-            var builder = [];
-            LAST_TABS.forEach(function (link) {
-                var url = link.url;
-                var title = link.title;
-                var pos = link.position;
-                li_template[1] = title;
-                li_template[4] = url;
-                li_template[7] = url;
-                li_template[9] = is_position_valid(pos) ? JSON.stringify(pos).replace(/"/g, '&quot;') : 'null';
-                li_template[11] = title;
-                li_template[14] = close_btn_tooltip;
-                builder.push(li_template.join(''));
-            });
-            list.innerHTML = builder.join('');
+            build_list(LAST_TABS);
             buttons_template[1] = chrome.i18n.getMessage('openAllButtonLabel');
             buttons_template[4] = chrome.i18n.getMessage('clearAllButtonLabel');
             clear_all.innerHTML = buttons_template.join('');
-            dom_class_add_listener('close-btn', 'click', remove_item);
-            dom_class_add_listener('link', 'click', click_link);
             dom_class_add_listener('open-all-btn', 'click', open_all_links);
             dom_class_add_listener('clear-all-btn', 'click', remove_all_items);
         }
