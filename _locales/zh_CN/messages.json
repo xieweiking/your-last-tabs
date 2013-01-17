@@ -15,5 +15,6 @@
     "optionAlwaysAppear": { "message": "总显示文件夹图标" },
     "optionSave": { "message": "保存" },
     "optionOK": { "message": "成功" },
-    "optionArrange": { "message": "整理" }
+    "optionArrange": { "message": "整理" },
+    "sureToRemoveAllLabel": { "message": "你确定要清除所有记录吗？" }
 }

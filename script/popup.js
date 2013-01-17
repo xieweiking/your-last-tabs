@@ -82,11 +82,14 @@
             }
         });
     }
+    var sure_to_remove_all_label = chrome.i18n.getMessage('sureToRemoveAllLabel');
     function remove_all_items() {
-        chrome.storage.local.set({ KEY_YOUR_LAST_TABS: [] }, function () {
-            show_no_more_tab();
-            save_all_windows_tabs();
-        });
+        if (confirm(sure_to_remove_all_label)) {
+            chrome.storage.local.set({ KEY_YOUR_LAST_TABS: [] }, function () {
+                show_no_more_tab();
+                save_all_windows_tabs();
+            });
+        }
     }
     function arrange_links(event) {
         chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (items) {

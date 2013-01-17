@@ -15,5 +15,6 @@
     "optionAlwaysAppear": { "message": "Always Show Icon" },
     "optionSave": { "message": "Save" },
     "optionOK": { "message": "OK" },
-    "optionArrange": { "message": "Arrange" }
+    "optionArrange": { "message": "Arrange" },
+    "sureToRemoveAllLabel": { "message": "Are you sure to remove all records?" }
 }
