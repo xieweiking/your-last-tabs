@@ -83,13 +83,16 @@
         });
     }
     var sure_to_remove_all_label = chrome.i18n.getMessage('sureToRemoveAllLabel');
-    function remove_all_items() {
+    function confirm_to_remove_all() {
         if (confirm(sure_to_remove_all_label)) {
-            chrome.storage.local.set({ KEY_YOUR_LAST_TABS: [] }, function () {
-                show_no_more_tab();
-                save_all_windows_tabs();
-            });
+            remove_all_items();
         }
+    }
+    function remove_all_items() {
+        chrome.storage.local.set({ KEY_YOUR_LAST_TABS: [] }, function () {
+            show_no_more_tab();
+            save_all_windows_tabs();
+        });
     }
     function arrange_links(event) {
         chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (items) {
@@ -202,7 +205,7 @@
     function add_all_event_listeners() {
         add_links_event_listeners();
         dom_class_add_listener('open-all-btn', 'click', open_all_links);
-        dom_class_add_listener('clear-all-btn', 'click', remove_all_items);
+        dom_class_add_listener('clear-all-btn', 'click', confirm_to_remove_all);
         dom_id_add_listener('arrange-checkbox', 'click', arrange_links);
     }
     function remove_links_event_listeners() {
@@ -212,7 +215,7 @@
     function remove_all_event_listeners() {
         remove_links_event_listeners();
         dom_class_remove_listener('open-all-btn', 'click', open_all_links);
-        dom_class_remove_listener('clear-all-btn', 'click', remove_all_items);
+        dom_class_remove_listener('clear-all-btn', 'click', confirm_to_remove_all);
         dom_id_remove_listener('arrange-checkbox', 'click', arrange_links);
     }
     chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (items) {
