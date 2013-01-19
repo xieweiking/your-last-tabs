@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="your-last-tabs" default="build">
+    <property name="version" value="0.1.11" />
+    <property name="target_dir" value="./target" />
+    <property name="locales_dir" value="${target_dir}/_locales" />
+    <property name="page_dir" value="${target_dir}/page" />
+    <property name="script_dir" value="${target_dir}/script" />
+    <property name="style_dir" value="${target_dir}/style" />
+    <property name="image_dir" value="${target_dir}/image" />
+
+    <path id="yui_classpath">
+        <fileset dir="./lib">
+            <include name="yuicompressor-2.4.7.jar" />
+            <include name="YUIAnt.jar" />
+        </fileset>
+    </path>
+
+    <target name="init">
+        <delete dir="${target_dir}" />
+        <mkdir dir="${target_dir}" />
+    </target>
+
+    <target name="copy">
+        <copy todir="${locales_dir}">
+            <fileset dir="../_locales" />
+        </copy>
+        <copy todir="${image_dir}">
+            <fileset dir="../image" />
+        </copy>
+        <copy todir="${page_dir}">
+            <fileset dir="../page" />
+        </copy>
+        <copy file="../manifest.json" todir="${target_dir}" />
+        <copy file="../LICENSE" todir="${target_dir}" />
+    </target>
+
+    <target name="compress">
+        <taskdef name="yuicompress" classname="com.yahoo.platform.yui.compressor.YUICompressTask">
+            <classpath>
+                <path refid="yui_classpath" />
+            </classpath>
+        </taskdef>
+        <yuicompress munge="yes" warn="true" outputFolder="${script_dir}" charset="UTF-8">
+            <fileset dir="../script">
+                <include name="**/*.js" />
+                <exclude name="**/*.min.js" />
+                <exclude name="**/*-min.js" />
+            </fileset>
+        </yuicompress>
+        <yuicompress munge="yes" warn="true" outputFolder="${style_dir}" charset="UTF-8">
+            <fileset dir="../style">
+                <include name="**/*.css" />
+                <exclude name="**/*.min.css" />
+                <exclude name="**/*-min.css" />
+            </fileset>
+        </yuicompress>
+    </target>
+
+    <target name="zip">
+        <zip destfile="your-last-tabs_${version}.zip">
+            <fileset dir="${target_dir}" />
+        </zip>
+    </target>
+
+    <target name="build">
+        <ant target="init" />
+        <ant target="copy" />
+        <ant target="compress" />
+        <ant target="zip" />
+    </target>
+</project>
