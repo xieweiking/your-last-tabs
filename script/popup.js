@@ -39,7 +39,7 @@
                     var tab = last_tabs[i];
                     if (tab.url == url) {
                         var has_next = last_tabs.length > 1;
-                        if (has_next || confirm(sure_to_remove_all_label)) {
+                        if (clicked === true || has_next || confirm(sure_to_remove_all_label)) {
                             if (clicked !== true) {
                                 chrome.extension.sendMessage(null, { remove: (has_next ? { index: i, value: tab } : { clear: true }) });
                             }
