@@ -28,33 +28,41 @@
         '</button>'
     ];
     var http_url_pattern = /^(https?:\/\/.+\/).*$/;
-    function remove_item(event) {
+    var sure_to_remove_all_label = chrome.i18n.getMessage('sureToRemoveAllLabel');
+    function remove_item(event, clicked) {
         var li = event.target.parentNode;
         chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (items) {
             if (has_last_tabs(items)) {
                 var last_tabs = items.KEY_YOUR_LAST_TABS;
                 var url = li.getElementsByClassName('link')[0].href;
-                list.removeChild(li);
                 for (var i = 0; i < last_tabs.length; ++i) {
-                    if (last_tabs[i].url == url) {
-                        last_tabs.remove(i);
-                        chrome.storage.local.set({ KEY_YOUR_LAST_TABS: last_tabs });
-                        break;
+                    var tab = last_tabs[i];
+                    if (tab.url == url) {
+                        var has_next = last_tabs.length > 1;
+                        if (has_next || confirm(sure_to_remove_all_label)) {
+                            if (clicked !== true) {
+                                chrome.extension.sendMessage(null, { remove: (has_next ? { index: i, value: tab } : { clear: true }) });
+                            }
+                            list.removeChild(li);
+                            last_tabs.remove(i);
+                            chrome.storage.local.set({ KEY_YOUR_LAST_TABS: last_tabs }, save_all_windows_tabs);
+                            break;
+                        }
                     }
                 }
                 if (last_tabs.length == 0) {
                     show_no_more_tab();
                 }
             }
-            save_all_windows_tabs();
         });
     }
+    var no_more_tab_header = chrome.i18n.getMessage('noMoreTab');
     function show_no_more_tab() {
         remove_all_event_listeners();
         arrange_pane.innerHTML = EMPTY_STR;
         list.innerHTML = EMPTY_STR;
         buttons_pane.innerHTML = EMPTY_STR;
-        head.innerHTML = chrome.i18n.getMessage('noMoreTab');
+        head.innerHTML = no_more_tab_header;
         chrome.tabs.getSelected(null, function (tab) {
             setTimeout(function () {
                 chrome.pageAction.hide(tab.id);
@@ -82,7 +90,6 @@
             }
         });
     }
-    var sure_to_remove_all_label = chrome.i18n.getMessage('sureToRemoveAllLabel');
     function confirm_to_remove_all() {
         if (confirm(sure_to_remove_all_label)) {
             remove_all_items();
@@ -92,7 +99,13 @@
         chrome.storage.local.set({ KEY_YOUR_LAST_TABS: [] }, function () {
             show_no_more_tab();
             save_all_windows_tabs();
+            chrome.extension.sendMessage(null, { clear: true });
         });
+    }
+    function rebuild_links(last_tabs, arrange) {
+        remove_links_event_listeners();
+        build_list(last_tabs, arrange);
+        add_links_event_listeners();
     }
     function arrange_links(event) {
         chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (items) {
@@ -100,9 +113,7 @@
                 var last_tabs = items.KEY_YOUR_LAST_TABS;
                 get_options(function (options) {
                     options.ARRANGE = event.target.checked;
-                    remove_links_event_listeners();
-                    build_list(last_tabs, options.ARRANGE);
-                    add_links_event_listeners();
+                    rebuild_links(last_tabs, options.ARRANGE);
                     chrome.storage.sync.set({ OPTIONS: options });
                 });
             }
@@ -148,12 +159,12 @@
                 else if (event.button === 1 || options.IN_BLANK) {
                     chrome.tabs.create({ url: url, selected: false });
                 }
-                remove_item(event);
+                remove_item(event, true);
             });
         });
     }
     function arrange(last_tabs) {
-        if (last_tabs == null || last_tabs.length <= 1) {
+        if (last_tabs == null || last_tabs.length < 3) {
             return;
         }
         var host_list = [];
@@ -218,17 +229,21 @@
         dom_class_remove_listener('clear-all-btn', 'click', confirm_to_remove_all);
         dom_id_remove_listener('arrange-checkbox', 'click', arrange_links);
     }
+    var extension_name = chrome.i18n.getMessage('extensionName');
+    var arrange_label = chrome.i18n.getMessage('optionArrange');
+    var open_all_button_label = chrome.i18n.getMessage('openAllButtonLabel');
+    var clear_all_button_label = chrome.i18n.getMessage('clearAllButtonLabel');
     chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (items) {
         if (has_last_tabs(items)) {
             var last_tabs = items.KEY_YOUR_LAST_TABS;
             get_options(function (options) {
                 var do_arrange = options.ARRANGE;
-                head.innerHTML = chrome.i18n.getMessage('extensionName');
+                head.innerHTML = extension_name;
                 arrange_template[1] = do_arrange ? checked_value : EMPTY_STR;
-                arrange_template[4] = chrome.i18n.getMessage('optionArrange');
+                arrange_template[4] = arrange_label;
                 arrange_pane.innerHTML = arrange_template.join(EMPTY_STR);
-                buttons_template[1] = chrome.i18n.getMessage('openAllButtonLabel');
-                buttons_template[4] = chrome.i18n.getMessage('clearAllButtonLabel');
+                buttons_template[1] = open_all_button_label;
+                buttons_template[4] = clear_all_button_label;
                 buttons_pane.innerHTML = buttons_template.join(EMPTY_STR);
                 build_list(last_tabs, do_arrange);
                 add_all_event_listeners();
@@ -236,6 +251,22 @@
         }
         else {
             show_no_more_tab();
+        }
+    });
+    window.addEventListener('keydown', function (event) {
+        if (event.ctrlKey && event.keyCode == 90) {
+            chrome.extension.sendMessage(null, { undo: true }, function (response) {
+                if (response != null) {
+                    chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (items) {
+                        if (has_last_tabs(items)) {
+                            var last_tabs = items.KEY_YOUR_LAST_TABS;
+                            last_tabs.splice(response.index, 0, response.value);
+                            rebuild_links(last_tabs, document.getElementById('arrange-checkbox').checked);
+                            chrome.storage.local.set({ KEY_YOUR_LAST_TABS: last_tabs }, save_all_windows_tabs);
+                        }
+                    });
+                }
+            });
         }
     });
 })();

@@ -52,9 +52,21 @@
             });
         }
     });
-    chrome.extension.onMessage.addListener(function (request, sender) {
+    var undo_stack = [];
+    chrome.extension.onMessage.addListener(function (request, sender, sendResponse) {
         if (request.save) {
             save_all_windows_tabs();
+        }
+        else if (request.remove != null) {
+            undo_stack.push(request.remove);
+        }
+        else if (request.undo && typeof(sendResponse) == 'function' && undo_stack.length > 0) {
+            sendResponse(undo_stack.pop());
+        }
+        else if (request.clear) {
+            while (undo_stack.length > 0) {
+                undo_stack.pop();
+            }
         }
     });
     var scaner_id = null;
@@ -62,19 +74,19 @@
         chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (items) {
             if (has_last_tabs(items)) {
                 chrome.tabs.query({}, function (tabs) {
-                    var LAST_TABS = items.KEY_YOUR_LAST_TABS;
+                    var last_tabs = items.KEY_YOUR_LAST_TABS;
                     var remove_count = 0;
                     tabs.forEach(function (tab) {
-                        for (var i = 0; i < LAST_TABS.length; ++i) {
-                            if (tab.url == LAST_TABS[i].url) {
-                                LAST_TABS.remove(i);
+                        for (var i = 0; i < last_tabs.length; ++i) {
+                            if (tab.url == last_tabs[i].url) {
+                                last_tabs.remove(i);
                                 ++remove_count;
                                 --i;
                             }
                         }
                     });
                     if (remove_count > 0) {
-                        chrome.storage.local.set({ KEY_YOUR_LAST_TABS: LAST_TABS });
+                        chrome.storage.local.set({ KEY_YOUR_LAST_TABS: last_tabs }, save_all_windows_tabs);
                     }
                 });
             }
