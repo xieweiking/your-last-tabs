@@ -50,13 +50,16 @@
         
     });
     document.getElementById('save-button').addEventListener('click', function () {
-        chrome.storage.sync.set({ OPTIONS: {
-            MAX_RECORD_COUNT: parseInt(max_record_count_field.value),
-            IN_BLANK: in_blank_true_radio.checked,
-            STANDING: standing_true_radio.checked,
-            ALWAYS_APPEAR: always_appear_true_radio.checked 
-        } }, function () {
-            alert(saveOptionOK);
+        get_options(function (options) {
+            chrome.storage.sync.set({ OPTIONS: {
+                MAX_RECORD_COUNT: parseInt(max_record_count_field.value),
+                IN_BLANK: in_blank_true_radio.checked,
+                STANDING: standing_true_radio.checked,
+                ALWAYS_APPEAR: always_appear_true_radio.checked,
+                ARRANGE: options.ARRANGE
+            } }, function () {
+                alert(saveOptionOK);
+            });
         });
     });
 })();
