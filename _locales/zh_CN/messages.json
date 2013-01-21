@@ -5,7 +5,7 @@
     "noMoreTab": { "message": "没上次的页签" },
     "clearAllButtonLabel": { "message": "删除所有记录" },
     "openAllButtonLabel": { "message": "打开所有链接" },
-    "closeButtonTooltip": { "message": "删除这个记录。\n按'Ctrl + Z'可撤销删除。" },
+    "closeButtonTooltip": { "message": "删除这个记录。\n按'Ctrl+Z'可撤销删除。" },
     "optionName": { "message": "选项" },
     "optionYes": { "message": "是" },
     "optionNo": { "message": "否" },

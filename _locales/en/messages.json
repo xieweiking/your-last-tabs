@@ -5,7 +5,7 @@
     "noMoreTab": { "message": "No More Tab" },
     "clearAllButtonLabel": { "message": "Clear All Records" },
     "openAllButtonLabel": { "message": "Open All Links" },
-    "closeButtonTooltip": { "message": "Remove this record.\nUse 'Ctrl + Z' to undo removal." },
+    "closeButtonTooltip": { "message": "Remove this record.\nUse 'Ctrl+Z' to undo removal." },
     "optionName": { "message": "Options" },
     "optionYes": { "message": "Yes" },
     "optionNo": { "message": "No" },

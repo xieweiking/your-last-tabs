@@ -5,7 +5,7 @@
     "noMoreTab": { "message": "沒上次的頁簽" },
     "clearAllButtonLabel": { "message": "刪除所有記錄" },
     "openAllButtonLabel": { "message": "打開所有鏈接" },
-    "closeButtonTooltip": { "message": "刪除這個記錄。\n按'Ctrl + Z'可撤銷刪除。" },
+    "closeButtonTooltip": { "message": "刪除這個記錄。\n按'Ctrl+Z'可撤銷刪除。" },
     "optionName": { "message": "選項" },
     "optionYes": { "message": "是" },
     "optionNo": { "message": "否" },
