@@ -2,8 +2,7 @@
     function show_page_action(tab) {
         var tab_id = tab.id;
         get_options(function (options) {
-            var url = tab.url;
-            if (OPTIONS_URL != url && (options.ALWAYS_APPEAR || CHROME_INNER_URL_PATTERN.test(url))) {
+            if (OPTIONS_URL != tab.url && (options.ALWAYS_APPEAR || is_newtab(tab))) {
                 chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (items) {
                     if (has_last_tabs(items)) {
                         chrome.pageAction.show(tab_id);
