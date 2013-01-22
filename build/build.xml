@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="your-last-tabs" default="build">
-    <property name="version" value="0.1.12" />
+    <property name="version" value="0.1.13" />
     <property name="target_dir" value="./target" />
     <property name="locales_dir" value="${target_dir}/_locales" />
     <property name="page_dir" value="${target_dir}/page" />
@@ -14,11 +14,6 @@
             <include name="YUIAnt.jar" />
         </fileset>
     </path>
-
-    <target name="init">
-        <delete dir="${target_dir}" />
-        <mkdir dir="${target_dir}" />
-    </target>
 
     <target name="copy">
         <copy todir="${locales_dir}">
@@ -63,9 +58,10 @@
     </target>
 
     <target name="build">
-        <ant target="init" />
+        <mkdir dir="${target_dir}" />
         <ant target="copy" />
         <ant target="compress" />
         <ant target="zip" />
+        <delete dir="${target_dir}" />
     </target>
 </project>
