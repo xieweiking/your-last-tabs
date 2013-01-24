@@ -27,7 +27,7 @@
             null/*4*/,
         '</button>'
     ];
-    var http_url_pattern = /^(https?:\/\/.+\/).*$/;
+    var http_url_pattern = /^(https?:\/\/[^\/]+\/).*$/;
     var sure_to_remove_all_label = chrome.i18n.getMessage('sureToRemoveAllLabel');
     function remove_item(event, clicked) {
         var li = event.target.parentNode;
@@ -73,6 +73,9 @@
         chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (items) {
             if (has_last_tabs(items)) {
                 var last_tabs = items.KEY_YOUR_LAST_TABS;
+                if (is_arrange_checkbox_checked()) {
+                    arrange(last_tabs);
+                }
                 last_tabs.forEach(function (tab) {
                     var url = tab.url;
                     var pos = {};
@@ -128,7 +131,8 @@
         });
     }
     function dom_id_add_listener(id, event_type, fn, capture) {
-        document.getElementById(id).addEventListener(event_type, fn, capture);
+        var dom = document.getElementById(id);
+        dom.addEventListener(event_type, fn, capture);
     }
     function dom_class_remove_listener(clazz, event_type, fn, capture) {
         dom_class_each(clazz, function (dom) {
@@ -136,7 +140,8 @@
         });
     }
     function dom_id_remove_listener(id, event_type, fn, capture) {
-        document.getElementById(id).removeEventListener(event_type, fn, capture);
+        var dom = document.getElementById(id);
+        dom.removeEventListener(event_type, fn, capture);
     }
     function click_link(event) {
         event.preventDefault();
@@ -253,6 +258,9 @@
             show_no_more_tab();
         }
     });
+    function is_arrange_checkbox_checked() {
+        return document.getElementById('arrange-checkbox').checked;
+    }
     window.addEventListener('keydown', function (event) {
         if (event.ctrlKey && event.keyCode == 90) {
             chrome.extension.sendMessage(null, { undo: true }, function (response) {
@@ -261,7 +269,7 @@
                         if (has_last_tabs(items)) {
                             var last_tabs = items.KEY_YOUR_LAST_TABS;
                             last_tabs.splice(response.index, 0, response.value);
-                            rebuild_links(last_tabs, document.getElementById('arrange-checkbox').checked);
+                            rebuild_links(last_tabs, is_arrange_checkbox_checked());
                             chrome.storage.local.set({ KEY_YOUR_LAST_TABS: last_tabs }, save_all_windows_tabs);
                         }
                     });
