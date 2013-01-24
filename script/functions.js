@@ -1,8 +1,9 @@
 var CHROME_INNER_URL_PATTERN = /^chrome(-.+)?\:\/\/.+/;
 var NEWTAB = { url: 'chrome://newtab/', selected : false };
-var NOT_PINED_TABS = { pinned: false };
+var NOT_PINED_TABS = { pinned: false, windowType: 'normal' };
 var KEY_YOUR_LAST_TABS = 'KEY_YOUR_LAST_TABS';
 var GET_POSITION_INJECTION = { code: '({ top: document.body.scrollTop, left: document.body.scrollLeft })' };
+var DEFAULT_POSITION = { top: 0, left: 0 };
 var OPTIONS_URL = chrome.extension.getURL('page/options.html');
 var EMPTY_STR = '';
 
@@ -45,9 +46,7 @@ function save_all_windows_tabs() {
                 current_tabs.push({ url: url, title: (title == null || title == EMPTY_STR ? url : title) });
                 url_map[url] = true;
                 chrome.tabs.executeScript(tab.id, GET_POSITION_INJECTION, function (ary) {
-                    if (ary != null && ary.length > 0) {
-                        positions[url] = ary[0];
-                    }
+                    positions[url] = (chrome.runtime.lastError != null || ary == null || ary.length == 0 ? DEFAULT_POSITION : ary[0]);
                 });
             }
         });
