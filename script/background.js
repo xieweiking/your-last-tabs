@@ -30,10 +30,10 @@
     chrome.tabs.onActivated.addListener(function (active_info) {
         chrome.tabs.get(active_info.tabId, show_page_action);
     });
+    var undo_stack = [], scaner_id = null, show_intrvl = null, ALL_TABS = {};
     get_options(function (options) {
         if (options.STANDING) {
             chrome.extension.onMessage.addListener(function (request, sender) {
-                var ALL_TABS = {};
                 if (request.standing) {
                     chrome.tabs.query(ALL_TABS, function (tabs) {
                         if (tabs.length == 1 && !CHROME_INNER_URL_PATTERN.test(tabs[0].url)) {
@@ -50,7 +50,6 @@
             });
         }
     });
-    var undo_stack = [];
     chrome.extension.onMessage.addListener(function (request, sender, sendResponse) {
         if (request.save) {
             save_all_windows_tabs();
@@ -67,13 +66,11 @@
             }
         }
     });
-    var scaner_id = null;
     scaner_id = setInterval(function () {
         chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (items) {
             if (has_last_tabs(items)) {
-                chrome.tabs.query({}, function (tabs) {
-                    var last_tabs = items.KEY_YOUR_LAST_TABS;
-                    var remove_count = 0;
+                chrome.tabs.query(ALL_TABS, function (tabs) {
+                    var last_tabs = items.KEY_YOUR_LAST_TABS, remove_count = 0;
                     tabs.forEach(function (tab) {
                         for (var i = 0; i < last_tabs.length; ++i) {
                             if (tab.url == last_tabs[i].url) {
@@ -93,7 +90,6 @@
             }
         });
     }, 1000);
-    var show_intrvl = null;
     show_intrvl = setInterval(function () {
         chrome.tabs.getSelected(null, function (tab) {
             show_page_action(tab);

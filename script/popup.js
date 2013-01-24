@@ -1,44 +1,51 @@
 (function () {
-    var head = document.getElementById('head');
-    var arrange_pane = document.getElementById('arrange-pane');
-    var list = document.getElementById('list');
-    var buttons_pane = document.getElementById('buttons-pane');
-    var checked_value = ' checked="checked"';
-    var arrange_template = [
-        '<input id="arrange-checkbox" type="checkbox"',  null/*1*/, ' />',
-        '<label id="arrange-label" for="arrange-checkbox">',
-            null/*4*/,
-        '</label>'
-    ];
-    var li_template = [
-        '<li class="item" title="', null/*1*/, '">',
-            '<img class="icon" src="chrome://favicon/', null/*4*/, '" />',
-            '<a class="link" target="_blank" href="', null/*7*/, '" data-position="', null/*9*/,'">',
-                null/*11*/,
-            '</a>',
-            '<a class="close-btn" href="javascript:void(0);" title="', null/*14*/, '">×</a>',
-        '</li>'
-    ];
-    var buttons_template = [
-        '<button class="open-all-btn" type="button">',
-            null/*1*/,
-        '</button>',
-        '<button class="clear-all-btn" type="button">',
-            null/*4*/,
-        '</button>'
-    ];
-    var http_url_pattern = /^(https?:\/\/[^\/]+\/).*$/;
-    var sure_to_remove_all_label = chrome.i18n.getMessage('sureToRemoveAllLabel');
+    var head = document.getElementById('head'),
+        arrange_pane = document.getElementById('arrange-pane'),
+        list = document.getElementById('list'),
+        buttons_pane = document.getElementById('buttons-pane'),
+        checked_value = ' checked="checked"',
+        arrange_template = [
+            '<input id="arrange-checkbox" type="checkbox"',  null/*1*/, ' />',
+            '<label id="arrange-label" for="arrange-checkbox">',
+                null/*4*/,
+            '</label>'
+        ],
+        li_template = [
+            '<li class="item" title="', null/*1*/, '">',
+                '<img class="icon" src="chrome://favicon/', null/*4*/, '" />',
+                '<a class="link" target="_blank" href="', null/*7*/, '" data-position="', null/*9*/,'">',
+                    null/*11*/,
+                '</a>',
+                '<a class="close-btn" href="javascript:void(0);" title="', null/*14*/, '">×</a>',
+            '</li>'
+        ],
+        buttons_template = [
+            '<button class="open-all-btn" type="button">',
+                null/*1*/,
+            '</button>',
+            '<button class="clear-all-btn" type="button">',
+                null/*4*/,
+            '</button>'
+        ],
+        http_url_pattern = /^(https?:\/\/[^\/]+\/).*$/,
+        sure_to_remove_all_label = chrome.i18n.getMessage('sureToRemoveAllLabel'),
+        no_more_tab_header = chrome.i18n.getMessage('noMoreTab'),
+        close_btn_tooltip = chrome.i18n.getMessage('closeButtonTooltip'),
+        extension_name = chrome.i18n.getMessage('extensionName'),
+        arrange_label = chrome.i18n.getMessage('optionArrange'),
+        open_all_button_label = chrome.i18n.getMessage('openAllButtonLabel'),
+        clear_all_button_label = chrome.i18n.getMessage('clearAllButtonLabel');
     function remove_item(event, clicked) {
         var li = event.target.parentNode;
         chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (items) {
             if (has_last_tabs(items)) {
-                var last_tabs = items.KEY_YOUR_LAST_TABS;
-                var url = li.getElementsByClassName('link')[0].href;
-                for (var i = 0; i < last_tabs.length; ++i) {
-                    var tab = last_tabs[i];
+                var last_tabs = items.KEY_YOUR_LAST_TABS,
+                    url = li.getElementsByClassName('link')[0].href,
+                    i = 0, tab = null, has_next = false;
+                for (; i < last_tabs.length; ++i) {
+                    tab = last_tabs[i];
                     if (tab.url == url) {
-                        var has_next = last_tabs.length > 1;
+                        has_next = last_tabs.length > 1;
                         if (clicked === true || has_next || confirm(sure_to_remove_all_label)) {
                             if (clicked !== true) {
                                 chrome.extension.sendMessage(null, { remove: (has_next ? { index: i, value: tab } : { clear: true }) });
@@ -56,7 +63,6 @@
             }
         });
     }
-    var no_more_tab_header = chrome.i18n.getMessage('noMoreTab');
     function show_no_more_tab() {
         remove_all_event_listeners();
         arrange_pane.innerHTML = EMPTY_STR;
@@ -77,8 +83,7 @@
                     arrange(last_tabs);
                 }
                 last_tabs.forEach(function (tab) {
-                    var url = tab.url;
-                    var pos = {};
+                    var url = tab.url, pos = {};
                     pos[url] = tab.position;
                     chrome.storage.local.set(pos, function () {
                         chrome.tabs.create({ url: url, selected: false });
@@ -132,7 +137,9 @@
     }
     function dom_id_add_listener(id, event_type, fn, capture) {
         var dom = document.getElementById(id);
-        dom.addEventListener(event_type, fn, capture);
+        if (dom != null) {
+            dom.addEventListener(event_type, fn, capture);
+        }
     }
     function dom_class_remove_listener(clazz, event_type, fn, capture) {
         dom_class_each(clazz, function (dom) {
@@ -141,13 +148,13 @@
     }
     function dom_id_remove_listener(id, event_type, fn, capture) {
         var dom = document.getElementById(id);
-        dom.removeEventListener(event_type, fn, capture);
+        if (dom != null) {
+            dom.removeEventListener(event_type, fn, capture);
+        }
     }
     function click_link(event) {
         event.preventDefault();
-        var a = event.target;
-        var url = a.href;
-        var pos = {};
+        var a = event.target, url = a.href, pos = {};
         pos[url] = JSON.parse(a.getAttribute('data-position'));
         chrome.storage.local.set(pos, function () {
             get_options(function (options) {
@@ -172,10 +179,10 @@
         if (last_tabs == null || last_tabs.length < 3) {
             return;
         }
-        var host_list = [];
+        var host_list = [], idx = 0;
         last_tabs.forEach(function (tab) {
-            var host = http_url_pattern.exec(tab.url)[1];
-            var not_found = true;
+            var host = http_url_pattern.exec(tab.url)[1],
+                not_found = true;
             host_list.forEach(function (item) {
                 if (item.host == host) {
                     item.tabs.push(tab);
@@ -186,7 +193,6 @@
                 host_list.push({ host: host, tabs: [tab] });
             }
         });
-        var idx = 0;
         host_list.forEach(function (item) {
             item.tabs.forEach(function (tab) {
                 last_tabs[idx] = tab;
@@ -194,16 +200,13 @@
             });
         });
     }
-    var close_btn_tooltip = chrome.i18n.getMessage('closeButtonTooltip');
     function build_list(last_tabs, do_arrange) {
         if (do_arrange) {
             arrange(last_tabs);
         }
         var builder = [];
         last_tabs.forEach(function (tab) {
-            var url = tab.url;
-            var title = tab.title;
-            var pos = tab.position;
+            var url = tab.url, title = tab.title, pos = tab.position;
             li_template[1] = title;
             li_template[4] = url;
             li_template[7] = url;
@@ -234,10 +237,6 @@
         dom_class_remove_listener('clear-all-btn', 'click', confirm_to_remove_all);
         dom_id_remove_listener('arrange-checkbox', 'click', arrange_links);
     }
-    var extension_name = chrome.i18n.getMessage('extensionName');
-    var arrange_label = chrome.i18n.getMessage('optionArrange');
-    var open_all_button_label = chrome.i18n.getMessage('openAllButtonLabel');
-    var clear_all_button_label = chrome.i18n.getMessage('clearAllButtonLabel');
     chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (items) {
         if (has_last_tabs(items)) {
             var last_tabs = items.KEY_YOUR_LAST_TABS;

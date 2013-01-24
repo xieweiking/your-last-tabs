@@ -1,18 +1,18 @@
 (function () {
-    var max_record_count_field = document.getElementById('max-record-count-field');
-    var in_blank_true_radio = document.getElementById('in-blank-true-radio');
-    var in_blank_false_radio = document.getElementById('in-blank-false-radio');
-    var standing_true_radio = document.getElementById('standing-true-radio');
-    var standing_false_radio = document.getElementById('standing-false-radio');
-    var always_appear_true_radio = document.getElementById('always-appear-true-radio');
-    var always_appear_false_radio = document.getElementById('always-appear-false-radio');
-    var optionName = chrome.i18n.getMessage('optionName');
-    var optionSave = chrome.i18n.getMessage('optionSave');
-    var saveOptionOK = optionSave + optionName + chrome.i18n.getMessage('optionOK');
+    var max_record_count_field = document.getElementById('max-record-count-field'),
+        in_blank_true_radio = document.getElementById('in-blank-true-radio'),
+        in_blank_false_radio = document.getElementById('in-blank-false-radio'),
+        standing_true_radio = document.getElementById('standing-true-radio'),
+        standing_false_radio = document.getElementById('standing-false-radio'),
+        always_appear_true_radio = document.getElementById('always-appear-true-radio'),
+        always_appear_false_radio = document.getElementById('always-appear-false-radio'),
+        optionName = chrome.i18n.getMessage('optionName'),
+        optionSave = chrome.i18n.getMessage('optionSave'),
+        saveOptionOK = optionSave + optionName + chrome.i18n.getMessage('optionOK'),
+        extentionName = chrome.i18n.getMessage('extensionName'),
+        yesLabel = chrome.i18n.getMessage('optionYes'),
+        noLabel = chrome.i18n.getMessage('optionNo');
     window.addEventListener('load', function () {
-        var extentionName = chrome.i18n.getMessage('extensionName');
-        var yesLabel = chrome.i18n.getMessage('optionYes');
-        var noLabel = chrome.i18n.getMessage('optionNo');
         document.title = extentionName + ' - ' + optionName;
         document.getElementById('extension-name').innerHTML = extentionName;
         document.getElementById('max-record-count-label').innerHTML = chrome.i18n.getMessage('optionMaxRecordCountLabel');

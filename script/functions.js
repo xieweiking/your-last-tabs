@@ -1,11 +1,11 @@
-var CHROME_INNER_URL_PATTERN = /^chrome(-.+)?\:\/\/.+/;
-var NEWTAB = { url: 'chrome://newtab/', selected : false };
-var NOT_PINED_TABS = { pinned: false, windowType: 'normal' };
-var KEY_YOUR_LAST_TABS = 'KEY_YOUR_LAST_TABS';
-var GET_POSITION_INJECTION = { code: '({ top: document.body.scrollTop, left: document.body.scrollLeft })' };
-var DEFAULT_POSITION = { top: 0, left: 0 };
-var OPTIONS_URL = chrome.extension.getURL('page/options.html');
-var EMPTY_STR = '';
+var CHROME_INNER_URL_PATTERN = /^chrome(-.+)?\:\/\/.+/,
+    NEWTAB = { url: 'chrome://newtab/', selected : false },
+    NOT_PINED_TABS = { pinned: false, windowType: 'normal' },
+    KEY_YOUR_LAST_TABS = 'KEY_YOUR_LAST_TABS',
+    GET_POSITION_INJECTION = { code: '({ top: document.body.scrollTop, left: document.body.scrollLeft })' },
+    DEFAULT_POSITION = { top: 0, left: 0 },
+    OPTIONS_URL = chrome.extension.getURL('page/options.html'),
+    EMPTY_STR = '';
 
 function is_newtab(tab) {
     return tab.url == NEWTAB.url;
@@ -25,8 +25,9 @@ function is_position_valid(pos) {
 }
 
 function is_positions_ready(positions, current_tabs) {
-    for (var i = 0; i < current_tabs.length; ++i) {
-        var tab = current_tabs[i];
+    var i = 0, tab = null;
+    for (; i < current_tabs.length; ++i) {
+        tab = current_tabs[i];
         if (positions[tab.url] == null) {
             return false;
         }
@@ -36,13 +37,10 @@ function is_positions_ready(positions, current_tabs) {
 
 function save_all_windows_tabs() {
     chrome.tabs.query(NOT_PINED_TABS, function (tabs) {
-        var current_tabs = [];
-        var url_map = {};
-        var positions = {};
+        var current_tabs = [], url_map = {}, positions = {}, check_id = null;
         tabs.forEach(function (tab) {
-            var url = tab.url;
+            var url = tab.url, title = tab.title;
             if (!url_map[url] && is_url_ok(url)) {
-                var title = tab.title;
                 current_tabs.push({ url: url, title: (title == null || title == EMPTY_STR ? url : title) });
                 url_map[url] = true;
                 chrome.tabs.executeScript(tab.id, GET_POSITION_INJECTION, function (ary) {
@@ -50,7 +48,6 @@ function save_all_windows_tabs() {
                 });
             }
         });
-        var check_id = null;
         check_id = setInterval(function () {
             if (check_id !== null && is_positions_ready(positions, current_tabs)) {
                 clearInterval(check_id);

@@ -12,8 +12,7 @@
                         };
                     }
                     else {
-                        var stub = document.createElement('iframe');
-                        var zero_px = '0px';
+                        var stub = document.createElement('iframe'), zero_px = '0px';
                         stub.name = 'your_last_tabs_background_notifier';
                         stub.style.visibility = 'hidden';
                         stub.style.border = 'none';
@@ -31,8 +30,7 @@
             }, 30);
         }
     });
-    var current_url = location.href;
-    var b = document.body;
+    var current_url = location.href, b = document.body, count = -1, count_intrvl = null;
     chrome.storage.local.get(current_url, function (items) {
         var pos = items[current_url];
         if (is_position_valid(pos)) {
@@ -41,7 +39,6 @@
             chrome.storage.local.remove(current_url);
         }
     });
-    var count = -1;
     function reset_count() {
         count = 2;
     }
@@ -50,7 +47,6 @@
             --count;
         }
     }
-    var count_intrvl = null;
     function stop_count() {
         if (count_intrvl !== null) {
             clearInterval(count_intrvl);
