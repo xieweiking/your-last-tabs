@@ -40,7 +40,7 @@ a {
 }
 
 a.link {
-    width: 178px;
+    width: 196px;
     color: #555;
     overflow: hidden;
     white-space: nowrap;
@@ -55,17 +55,21 @@ a.link:hover {
 a.close-btn {
     width: 18px;
     text-align: center;
-    visibility: hidden;
+    display: none;
     color: #BF3434;
 }
 
 a.close-btn:hover {
     color: red;
 }
+li.item:hover a.link {
+	width: 178px;
+}
 
 li.item:hover a.close-btn {
-    visibility: visible;
+    display: inline-block;
 }
+
 
 button.clear-all-btn, button.open-all-btn {
     font-size: 12px !important;
