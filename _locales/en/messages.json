@@ -3,7 +3,7 @@
     "extensionDescription": { "message": "Your Last Tabs, blah blah blah..." },
     "extensionToolTip": { "message": "You have unfinished tabs last time.\nTips: Use mouse middle button to open in new tab" },
     "noMoreTab": { "message": "No More Tab" },
-    "clearAllButtonLabel": { "message": "Clear All Records" },
+    "clearAllButtonLabel": { "message": "Clear All" },
     "openAllButtonLabel": { "message": "Open All Links" },
     "closeButtonTooltip": { "message": "Remove this record.\nUse 'Ctrl+Z' to undo removal." },
     "optionName": { "message": "Options" },

@@ -6,26 +6,18 @@
         checked_value = ' checked="checked"',
         arrange_template = [
             '<input id="arrange-checkbox" type="checkbox"',  null/*1*/, ' />',
-            '<label id="arrange-label" for="arrange-checkbox">',
-                null/*4*/,
-            '</label>'
+            '<label id="arrange-label" for="arrange-checkbox">', null/*4*/, '</label>'
         ],
         li_template = [
             '<li class="item" title="', null/*1*/, '">',
                 '<img class="icon" src="chrome://favicon/', null/*4*/, '" />',
-                '<a class="link" target="_blank" href="', null/*7*/, '" data-position="', null/*9*/,'">',
-                    null/*11*/,
-                '</a>',
+                '<a class="link" target="_blank" href="', null/*7*/, '" data-position="', null/*9*/,'">', null/*11*/, '</a>',
                 '<a class="close-btn" href="javascript:void(0);" title="', null/*14*/, '">×</a>',
             '</li>'
         ],
         buttons_template = [
-            '<button class="open-all-btn" type="button">',
-                null/*1*/,
-            '</button>',
-            '<button class="clear-all-btn" type="button">',
-                null/*4*/,
-            '</button>'
+            '<button class="open-all-btn" type="button">', null/*1*/, '</button>',
+            '<button class="clear-all-btn" type="button">', null/*4*/, '</button>'
         ],
         http_url_pattern = /^(https?:\/\/[^\/]+\/).*$/,
         sure_to_remove_all_label = chrome.i18n.getMessage('sureToRemoveAllLabel'),
