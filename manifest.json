@@ -1,6 +1,6 @@
 {
     "name": "__MSG_extensionName__",
-    "version": "0.1.14",
+    "version": "0.1.15",
 
     "description": "__MSG_extensionDescription__",
     "icons": {
@@ -30,7 +30,8 @@
     "permissions": [
         "chrome://favicon/",
         "http://*/*", "https://*/*",
-        "tabs", "storage"
+        "tabs", "storage",
+        "contextMenus"
     ],
 
     "web_accessible_resources": [

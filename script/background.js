@@ -98,4 +98,25 @@
             }
         });
     }, 600);
+    chrome.contextMenus.create({ title: chrome.i18n.getMessage('contextMenu'), onclick: function (info, tab) {
+        var t_id = tab.id, url = tab.url;
+        if (is_url_ok(url)) {
+            chrome.tabs.executeScript(t_id, GET_POSITION_INJECTION, function (ary) {
+                var record = {
+                    url: url,
+                    title: get_tab_title(url, tab.title),
+                    position: extract_position(ary)
+                };
+                chrome.tabs.remove(t_id, function () {
+                    chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (items) {
+                        if (has_last_tabs(items)) {
+                            var legacy_tabs = items.KEY_YOUR_LAST_TABS;
+                            legacy_tabs.splice(0, 0, record);
+                            chrome.storage.local.set({ KEY_YOUR_LAST_TABS: legacy_tabs }, save_all_windows_tabs);
+                        }
+                    });
+                });
+            });
+        }
+    } });
 })();

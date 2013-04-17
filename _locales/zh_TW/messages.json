@@ -16,5 +16,6 @@
     "optionSave": { "message": "保存" },
     "optionOK": { "message": "成功" },
     "optionArrange": { "message": "整理" },
-    "sureToRemoveAllLabel": { "message": "你確定要刪除所有記錄嗎？\n這樣刪除是不能撤銷的。" }
+    "sureToRemoveAllLabel": { "message": "你確定要刪除所有記錄嗎？\n這樣刪除是不能撤銷的。" },
+    "contextMenu": { "message": "關閉並暫存當前頁" }
 }

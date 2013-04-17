@@ -16,5 +16,6 @@
     "optionSave": { "message": "Save" },
     "optionOK": { "message": "OK" },
     "optionArrange": { "message": "Arrange" },
-    "sureToRemoveAllLabel": { "message": "Are you sure to remove all records?\nThis removal can NOT be undone." }
+    "sureToRemoveAllLabel": { "message": "Are you sure to remove all records?\nThis removal can NOT be undone." },
+    "contextMenu": { "message": "Close and Save this page" }
 }
