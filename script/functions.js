@@ -49,15 +49,21 @@ function save_all_windows_tabs() {
     chrome.tabs.query(NOT_PINED_TABS, function (tabs) {
         var current_tabs = [], url_map = {}, positions = {}, check_id = null;
         tabs.forEach(function (tab) {
-            var url = tab.url, title = tab.title;
+            var url = tab.url;
             if (!url_map[url] && is_url_ok(url)) {
-                current_tabs.push({ url: url, title: get_tab_title(url, title) });
-                url_map[url] = true;
                 chrome.tabs.get(tab.id, function (t) { // to ensure the tab was
                     if (t != null) {                   // not bean removed
-                        chrome.tabs.executeScript(t.id, GET_POSITION_INJECTION, function (ary) {
-                            positions[url] = extract_position(ary);
-                        });
+                        var title = get_tab_title(url, t.title);
+                        current_tabs.push({ url: url, title: title });
+                        url_map[url] = true;
+                        if (url != title) { // only execute get position script on those no error pages
+                            chrome.tabs.executeScript(t.id, GET_POSITION_INJECTION, function (ary) {
+                                positions[url] = extract_position(ary);
+                            });
+                        }
+                        else {
+                            positions[url] = DEFAULT_POSITION;
+                        }
                     }
                 });
             }
