@@ -3,6 +3,7 @@ var CHROME_INNER_URL_PATTERN = /^chrome(-.+)?\:\/\/.+/,
     NEWTAB = { url: 'chrome://newtab/', selected : false },
     NOT_PINED_TABS = { pinned: false, windowType: 'normal' },
     KEY_YOUR_LAST_TABS = 'KEY_YOUR_LAST_TABS',
+    KEY_YOUR_LAST_TABS_TMP = 'KEY_YOUR_LAST_TABS_TMP',
     GET_POSITION_INJECTION = { code: '({ top: document.body.scrollTop, left: document.body.scrollLeft })' },
     DEFAULT_POSITION = { top: 0, left: 0 },
     OPTIONS_URL = chrome.extension.getURL('page/options.html'),
@@ -12,8 +13,8 @@ function is_newtab(tab) {
     return tab.url == NEWTAB.url;
 }
 
-function has_last_tabs(items) {
-    return items != null && items.KEY_YOUR_LAST_TABS != null && items.KEY_YOUR_LAST_TABS.length > 0;
+function has_last_tabs_tmp(items) {
+    return items != null && items.KEY_YOUR_LAST_TABS_TMP != null && items.KEY_YOUR_LAST_TABS_TMP.length > 0;
 }
 
 function is_url_ok(url) {
@@ -52,8 +53,12 @@ function save_all_windows_tabs() {
             if (!url_map[url] && is_url_ok(url)) {
                 current_tabs.push({ url: url, title: get_tab_title(url, title) });
                 url_map[url] = true;
-                chrome.tabs.executeScript(tab.id, GET_POSITION_INJECTION, function (ary) {
-                    positions[url] = extract_position(ary);
+                chrome.tabs.get(tab.id, function (t) { // to ensure the tab was
+                    if (t != null) {                   // not bean removed
+                        chrome.tabs.executeScript(t.id, GET_POSITION_INJECTION, function (ary) {
+                            positions[url] = extract_position(ary);
+                        });
+                    }
                 });
             }
         });
@@ -70,12 +75,12 @@ function save_all_windows_tabs() {
                         if (diff > 0) {
                             current_tabs = current_tabs.slice(diff, current_tabs.length);
                         }
-                        chrome.storage.sync.set({ KEY_YOUR_LAST_TABS: current_tabs });
+                        chrome.storage.local.set({ KEY_YOUR_LAST_TABS: current_tabs });
                     }
                     else {
-                        chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (items) {
-                            if (has_last_tabs(items)) {
-                                var legacy_tabs = items.KEY_YOUR_LAST_TABS;
+                        chrome.storage.local.get(KEY_YOUR_LAST_TABS_TMP, function (items) {
+                            if (has_last_tabs_tmp(items)) {
+                                var legacy_tabs = items.KEY_YOUR_LAST_TABS_TMP;
                                 diff += legacy_tabs.length;
                                 if (diff < legacy_tabs.length) {
                                     if (diff > 0) {
@@ -84,7 +89,7 @@ function save_all_windows_tabs() {
                                     current_tabs.push.apply(current_tabs, legacy_tabs);
                                 }
                             }
-                            chrome.storage.sync.set({ KEY_YOUR_LAST_TABS: current_tabs });
+                            chrome.storage.local.set({ KEY_YOUR_LAST_TABS: current_tabs });
                         });
                     }
                 });

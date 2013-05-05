@@ -51,7 +51,7 @@
     });
     document.getElementById('save-button').addEventListener('click', function () {
         get_options(function (options) {
-            chrome.storage.sync.set({ OPTIONS: {
+            chrome.storage.local.set({ OPTIONS: {
                 MAX_RECORD_COUNT: parseInt(max_record_count_field.value),
                 IN_BLANK: in_blank_true_radio.checked,
                 STANDING: standing_true_radio.checked,

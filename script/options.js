@@ -14,7 +14,7 @@ function guard_options(options) {
 }
 
 function get_options(callback) {
-    chrome.storage.sync.get('OPTIONS', function (items) {
+    chrome.storage.local.get('OPTIONS', function (items) {
         if (typeof(callback) == 'function') {
             callback(guard_options(items.OPTIONS));
         }

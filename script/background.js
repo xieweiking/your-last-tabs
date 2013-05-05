@@ -3,8 +3,8 @@
         var tab_id = tab.id;
         get_options(function (options) {
             if (OPTIONS_URL != tab.url && (options.ALWAYS_APPEAR || is_newtab(tab))) {
-                chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (items) {
-                    if (has_last_tabs(items)) {
+                chrome.storage.local.get(KEY_YOUR_LAST_TABS_TMP, function (items) {
+                    if (has_last_tabs_tmp(items)) {
                         chrome.pageAction.show(tab_id);
                     }
                     else {
@@ -17,8 +17,9 @@
             }
         });
     }
-    chrome.storage.sync.get(function (items) {
-        chrome.storage.local.set({ KEY_YOUR_LAST_TABS: (has_last_tabs(items) ? items.KEY_YOUR_LAST_TABS : []) });
+    chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (items) {
+        chrome.storage.local.set({ KEY_YOUR_LAST_TABS_TMP:
+            (items != null && items.KEY_YOUR_LAST_TABS != null ? items.KEY_YOUR_LAST_TABS : []) });
     });
     chrome.tabs.onUpdated.addListener(function (tab_id, change_info, tab) {
         show_page_action(tab);
@@ -67,10 +68,10 @@
         }
     });
     scaner_id = setInterval(function () {
-        chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (items) {
-            if (has_last_tabs(items)) {
+        chrome.storage.local.get(KEY_YOUR_LAST_TABS_TMP, function (items) {
+            if (has_last_tabs_tmp(items)) {
                 chrome.tabs.query(ALL_TABS, function (tabs) {
-                    var last_tabs = items.KEY_YOUR_LAST_TABS, remove_count = 0;
+                    var last_tabs = items.KEY_YOUR_LAST_TABS_TMP, remove_count = 0;
                     tabs.forEach(function (tab) {
                         for (var i = 0; i < last_tabs.length; ++i) {
                             if (tab.url == last_tabs[i].url) {
@@ -81,7 +82,7 @@
                         }
                     });
                     if (remove_count > 0) {
-                        chrome.storage.local.set({ KEY_YOUR_LAST_TABS: last_tabs }, save_all_windows_tabs);
+                        chrome.storage.local.set({ KEY_YOUR_LAST_TABS_TMP: last_tabs }, save_all_windows_tabs);
                     }
                 });
             }
@@ -107,15 +108,14 @@
                     title: get_tab_title(url, tab.title),
                     position: extract_position(ary)
                 };
-                chrome.tabs.remove(t_id, function () {
-                    chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (items) {
-                        if (has_last_tabs(items)) {
-                            var legacy_tabs = items.KEY_YOUR_LAST_TABS;
-                            legacy_tabs.splice(0, 0, record);
-                            chrome.storage.local.set({ KEY_YOUR_LAST_TABS: legacy_tabs }, save_all_windows_tabs);
-                        }
-                    });
+                chrome.storage.local.get(KEY_YOUR_LAST_TABS_TMP, function (items) {
+                    if (items != null && items.KEY_YOUR_LAST_TABS_TMP != null) {
+                        var legacy_tabs = items.KEY_YOUR_LAST_TABS_TMP;
+                        legacy_tabs.splice(0, 0, record);
+                        chrome.storage.local.set({ KEY_YOUR_LAST_TABS_TMP: legacy_tabs });
+                    }
                 });
+                chrome.tabs.remove(t_id);
             });
         }
     } });
