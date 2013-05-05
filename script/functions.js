@@ -53,17 +53,11 @@ function save_all_windows_tabs() {
             if (!url_map[url] && is_url_ok(url)) {
                 chrome.tabs.get(tab.id, function (t) { // to ensure the tab was
                     if (t != null) {                   // not bean removed
-                        var title = get_tab_title(url, t.title);
-                        current_tabs.push({ url: url, title: title });
+                        current_tabs.push({ url: url, title: get_tab_title(url, t.title) });
                         url_map[url] = true;
-                        if (url != title) { // only execute get position script on those no error pages
-                            chrome.tabs.executeScript(t.id, GET_POSITION_INJECTION, function (ary) {
-                                positions[url] = extract_position(ary);
-                            });
-                        }
-                        else {
-                            positions[url] = DEFAULT_POSITION;
-                        }
+                        chrome.tabs.executeScript(t.id, GET_POSITION_INJECTION, function (ary) {
+                            positions[url] = extract_position(ary);
+                        });
                     }
                 });
             }
