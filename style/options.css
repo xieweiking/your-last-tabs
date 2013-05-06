@@ -80,10 +80,13 @@ body {
     text-align: center;
 }
 
-#save-button {
-    width: 200px;
-    margin: 10px;
-}
+#save-button, #sync-up-button, #sync-down-button { margin: 10px; }
+
+#save-button { width: 150px; margin-right: 0px; margin-left: 0px; }
+
+#sync-up-button, #sync-down-button { width: 36px; padding: 0px; min-width: 1em; }
+#sync-up-button { margin-right: 0px; }
+#sync-down-button { margin-left: 0px; }
 
 @-webkit-keyframes bounceIn {
     0% {

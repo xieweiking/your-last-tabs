@@ -20,6 +20,8 @@
         document.getElementById('standing-label').innerHTML = chrome.i18n.getMessage('optionStanding');
         document.getElementById('always-appear-label').innerHTML = chrome.i18n.getMessage('optionAlwaysAppear');
         document.getElementById('save-button').innerHTML = optionSave;
+        document.getElementById('sync-up-button').title = chrome.i18n.getMessage('optionSyncUp');
+        document.getElementById('sync-down-button').title = chrome.i18n.getMessage('optionSyncDown');
         document.getElementById('in-blank-true-label').innerHTML = yesLabel;
         document.getElementById('standing-true-label').innerHTML = yesLabel;
         document.getElementById('always-appear-true-label').innerHTML = yesLabel;
@@ -47,7 +49,6 @@
                 always_appear_false_radio.checked = true;
             }
         });
-        
     });
     document.getElementById('save-button').addEventListener('click', function () {
         get_options(function (options) {
@@ -60,6 +61,38 @@
             } }, function () {
                 alert(saveOptionOK);
             });
+        });
+    });
+    document.getElementById('sync-up-button').addEventListener('click', function () {
+        chrome.storage.sync.clear(function () {
+            chrome.storage.local.get(function (items) {
+                chrome.storage.sync.set({
+                    KEY_YOUR_LAST_TABS: items.KEY_YOUR_LAST_TABS,
+                    OPTIONS: items.OPTIONS || DEFAULT_OPTIONS
+                });
+            });
+        });
+    });
+    document.getElementById('sync-down-button').addEventListener('click', function () {
+        chrome.storage.sync.get(function (items) {
+            if (items != null && items.OPTIONS != null && items.KEY_YOUR_LAST_TABS != null) {
+                chrome.storage.local.set({ OPTIONS: items.OPTIONS }, function () {
+                    if (items.KEY_YOUR_LAST_TABS.length > 0) {
+                        chrome.storage.local.get(KEY_YOUR_LAST_TABS, function (i) {
+                            if (i != null && i.KEY_YOUR_LAST_TABS != null && i.KEY_YOUR_LAST_TABS.length > 0) {
+                                var tabs = i.KEY_YOUR_LAST_TABS, urlMap = {};
+                                tabs.forEach(function (t) { urlMap[t.url] = true; });
+                                items.KEY_YOUR_LAST_TABS.forEach(function (t) {
+                                    if (!urlMap[t.url]) {
+                                        tabs.push(t);
+                                    }
+                                });
+                                chrome.storage.local.set({ KEY_YOUR_LAST_TABS_TMP: tabs });
+                            }
+                        });
+                    }
+                });
+            }
         });
     });
 })();

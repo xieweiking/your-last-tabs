@@ -15,6 +15,8 @@
     "optionAlwaysAppear": { "message": "Always Show Icon" },
     "optionSave": { "message": "Save" },
     "optionOK": { "message": "OK" },
+    "optionSyncUp": { "message": "Sync Up Records To Server" },
+    "optionSyncDown": { "message": "Sync Down Records From Server" },
     "optionArrange": { "message": "Arrange" },
     "sureToRemoveAllLabel": { "message": "Are you sure to remove all records?\nThis removal can NOT be undone." },
     "contextMenu": { "message": "Read it later" }

@@ -15,6 +15,8 @@
     "optionAlwaysAppear": { "message": "總顯示文件夾圖標" },
     "optionSave": { "message": "保存" },
     "optionOK": { "message": "成功" },
+    "optionSyncUp": { "message": "同步記錄至伺服器" },
+    "optionSyncDown": { "message": "從伺服器合併記錄" },
     "optionArrange": { "message": "整理" },
     "sureToRemoveAllLabel": { "message": "你確定要刪除所有記錄嗎？\n這樣刪除是不能撤銷的。" },
     "contextMenu": { "message": "稍後再讀" }
