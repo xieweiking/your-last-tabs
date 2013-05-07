@@ -51,14 +51,10 @@ function save_all_windows_tabs() {
         tabs.forEach(function (tab) {
             var url = tab.url;
             if (!url_map[url] && is_url_ok(url)) {
-                chrome.tabs.get(tab.id, function (t) { // to ensure the tab was
-                    if (t != null) {                   // not bean removed
-                        current_tabs.push({ url: url, title: get_tab_title(url, t.title) });
-                        url_map[url] = true;
-                        chrome.tabs.executeScript(t.id, GET_POSITION_INJECTION, function (ary) {
-                            positions[url] = extract_position(ary);
-                        });
-                    }
+                current_tabs.push({ url: url, title: get_tab_title(url, tab.title) });
+                url_map[url] = true;
+                chrome.tabs.executeScript(tab.id, GET_POSITION_INJECTION, function (ary) {
+                    positions[url] = extract_position(ary);
                 });
             }
         });
