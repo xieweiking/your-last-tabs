@@ -1,5 +1,6 @@
 var CHROME_INNER_URL_PATTERN = /^chrome(-.+)?\:\/\/.+/,
     LOCAL_FILE_URL_PATTERN = /^file\:\/\/.+/,
+    EXTENSIONS_GALLERY_URL_PATTEN = /^https?:\/\/chrome\.google\.com\/webstore(\/.*)?$/,
     NEWTAB = { url: 'chrome://newtab/', selected : false },
     NOT_PINED_TABS = { pinned: false, windowType: 'normal' },
     KEY_YOUR_LAST_TABS = 'KEY_YOUR_LAST_TABS',
@@ -22,8 +23,7 @@ function is_url_ok(url) {
 }
 
 function is_position_valid(pos) {
-    var typeNum = typeof(0);
-    return pos != null && typeof(pos.top) == typeNum && typeof(pos.left) == typeNum;
+    return pos != null && typeof(pos.top) == 'number' && typeof(pos.left) == 'number';
 }
 
 function is_positions_ready(positions, current_tabs) {
@@ -35,6 +35,10 @@ function is_positions_ready(positions, current_tabs) {
         }
     }
     return true;
+}
+
+function is_tab_can_not_be_injected(tab) {
+    return 'loading' == tab.status || EXTENSIONS_GALLERY_URL_PATTEN.test(tab.url);
 }
 
 function get_tab_title(url, title) {
@@ -53,9 +57,14 @@ function save_all_windows_tabs() {
             if (!url_map[url] && is_url_ok(url)) {
                 current_tabs.push({ url: url, title: get_tab_title(url, tab.title) });
                 url_map[url] = true;
-                chrome.tabs.executeScript(tab.id, GET_POSITION_INJECTION, function (ary) {
-                    positions[url] = extract_position(ary);
-                });
+                if (is_tab_can_not_be_injected(tab)) {
+                    positions[url] = DEFAULT_POSITION;
+                }
+                else {
+                    chrome.tabs.executeScript(tab.id, GET_POSITION_INJECTION, function (ary) {
+                        positions[url] = extract_position(ary);
+                    });
+                }
             }
         });
         check_id = setInterval(function () {
