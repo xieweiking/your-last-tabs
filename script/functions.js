@@ -1,6 +1,8 @@
 var CHROME_INNER_URL_PATTERN = /^chrome(-.+)?\:\/\/.+/,
     LOCAL_FILE_URL_PATTERN = /^file\:\/\/.+/,
     EXTENSIONS_GALLERY_URL_PATTEN = /^https?:\/\/chrome\.google\.com\/webstore(\/.*)?$/,
+    GOOGLE_WEBHP_PATTERN = /^https?:\/\/www\.google\.[\.a-z]{2,}\/webhp\?sourceid=chrome-instant&espv=\d+&es_sm=\d+&ie=[a-zA-Z\-\d]+$/,
+    CHROME_SEARCH_PATTERN = /^chrome-search:\/\/local-ntp\/local-ntp.html(\?\S+)?$/,
     NEWTAB = { url: 'chrome://newtab/', selected : false },
     NOT_PINED_TABS = { pinned: false, windowType: 'normal' },
     KEY_YOUR_LAST_TABS = 'KEY_YOUR_LAST_TABS',
@@ -11,7 +13,7 @@ var CHROME_INNER_URL_PATTERN = /^chrome(-.+)?\:\/\/.+/,
     EMPTY_STR = '';
 
 function is_newtab(tab) {
-    return tab.url == NEWTAB.url;
+    return tab.url == NEWTAB.url || GOOGLE_WEBHP_PATTERN.test(tab.url) || CHROME_SEARCH_PATTERN.test(tab.url);
 }
 
 function has_last_tabs_tmp(items) {
