@@ -1,7 +1,7 @@
 var CHROME_INNER_URL_PATTERN = /^chrome(-.+)?\:\/\/.+/,
     LOCAL_FILE_URL_PATTERN = /^file\:\/\/.+/,
     EXTENSIONS_GALLERY_URL_PATTEN = /^https?:\/\/chrome\.google\.com\/webstore(\/.*)?$/,
-    GOOGLE_WEBHP_PATTERN = /^https?:\/\/www\.google\.[\.a-z]{2,}\/webhp\?sourceid=chrome-instant&espv=\d+&es_sm=\d+&ie=[a-zA-Z\-\d]+$/,
+    GOOGLE_WEBHP_PATTERN = /^https?:\/\/www\.google\.[\.a-z]{2,}\/webhp\?.*sourceid=chrome-instant.*/,
     CHROME_SEARCH_PATTERN = /^chrome-search:\/\/local-ntp\/local-ntp.html(\?\S+)?$/,
     NEWTAB = { url: 'chrome://newtab/', selected : false },
     NOT_PINED_TABS = { pinned: false, windowType: 'normal' },
