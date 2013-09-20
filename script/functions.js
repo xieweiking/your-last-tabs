@@ -21,7 +21,7 @@ function has_last_tabs_tmp(items) {
 }
 
 function is_url_ok(url) {
-    return url != null && url != EMPTY_STR && !CHROME_INNER_URL_PATTERN.test(url) && !LOCAL_FILE_URL_PATTERN.test(url);
+    return url != null && url != EMPTY_STR && !CHROME_INNER_URL_PATTERN.test(url) && !LOCAL_FILE_URL_PATTERN.test(url) && !GOOGLE_WEBHP_PATTERN.test(url);
 }
 
 function is_position_valid(pos) {
