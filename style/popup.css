@@ -45,6 +45,7 @@ a.link {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    vertical-align: bottom;
 }
 
 a.link:hover {
