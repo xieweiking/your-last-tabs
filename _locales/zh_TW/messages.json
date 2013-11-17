@@ -11,7 +11,7 @@
     "optionNo": { "message": "否" },
     "optionMaxRecordCountLabel": { "message": "最多記錄頁簽個數" },
     "optionInBlankLabel": { "message": "總是在新頁簽打開" },
-    "optionStanding": { "message": "保持最後一個頁簽" },
+    "optionStanding": { "message": "總保留一個空頁簽" },
     "optionAlwaysAppear": { "message": "總顯示文件夾圖標" },
     "optionSave": { "message": "保存" },
     "optionOK": { "message": "成功" },

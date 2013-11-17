@@ -11,7 +11,7 @@
     "optionNo": { "message": "No" },
     "optionMaxRecordCountLabel": { "message": "Max Record Count" },
     "optionInBlankLabel": { "message": "Open In New Tab" },
-    "optionStanding": { "message": "Keep Standing" },
+    "optionStanding": { "message": "Keep One Empty Tab" },
     "optionAlwaysAppear": { "message": "Always Show Icon" },
     "optionSave": { "message": "Save" },
     "optionOK": { "message": "OK" },

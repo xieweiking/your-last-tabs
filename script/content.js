@@ -1,35 +1,4 @@
 (function () {
-    get_options(function (options) {
-        if (options.STANDING) {
-            var scanner_id = null;
-            scanner_id = setInterval(function () {
-                if (document.body !== null && scanner_id !== null) {
-                    clearInterval(scanner_id);
-                    scanner_id = null;
-                    if (window.onbeforeunload == null) {
-                        window.onbeforeunload = function () {
-                            chrome.extension.sendMessage(null, { standing: true });
-                        };
-                    }
-                    else {
-                        var stub = document.createElement('iframe'), zero_px = '0px';
-                        stub.name = 'your_last_tabs_background_notifier';
-                        stub.style.visibility = 'hidden';
-                        stub.style.border = 'none';
-                        stub.style.position = 'absolute';
-                        stub.style.width = zero_px;
-                        stub.style.height = zero_px;
-                        stub.style.top = zero_px;
-                        stub.style.left = zero_px;
-                        stub.style.padding = zero_px;
-                        stub.style.margin = zero_px;
-                        stub.src = chrome.extension.getURL('page/blank.html');
-                        document.body.appendChild(stub);
-                    }
-                }
-            }, 30);
-        }
-    });
     var current_url = location.href, b = document.body, count = -1, count_intrvl = null;
     chrome.storage.local.get(current_url, function (items) {
         var pos = items[current_url];

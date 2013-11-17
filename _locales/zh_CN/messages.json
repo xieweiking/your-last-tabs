@@ -11,7 +11,7 @@
     "optionNo": { "message": "否" },
     "optionMaxRecordCountLabel": { "message": "最多记录页签个数" },
     "optionInBlankLabel": { "message": "总是在新页签打开" },
-    "optionStanding": { "message": "保持最后一个页签" },
+    "optionStanding": { "message": "总保留一个空页签" },
     "optionAlwaysAppear": { "message": "总显示文件夹图标" },
     "optionSave": { "message": "保存" },
     "optionOK": { "message": "成功" },
