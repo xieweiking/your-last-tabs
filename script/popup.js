@@ -199,7 +199,7 @@
         var builder = [];
         last_tabs.forEach(function (tab) {
             var url = tab.url, title = tab.title, pos = tab.position;
-            li_template[1] = title;
+            li_template[1] = title + '\n' + url;
             li_template[4] = url;
             li_template[7] = url;
             li_template[9] = is_position_valid(pos) ? JSON.stringify(pos).replace(/"/g, '&quot;') : 'null';
