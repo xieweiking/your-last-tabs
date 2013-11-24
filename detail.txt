@@ -1,8 +1,8 @@
 Chrome默认的会话恢复机制中，只有全部打开上次访问的页面或打开空的新页签。作为懒人，一次打开全部页面会令到自己倍感压力，而空的新页签却只有上次访问的“N个页签”这个选项，最终还是要一次过打开所有页面。
 
-这个扩展恰好处在中间立场——它可以保存你上次会话最后访问的那些页签（会使用Google账户进行跨机器的同步）。你可以使用空页面（或其它）作为你的首页，而不失快速访问上次未读完的页面的便利。当然，你也可以选择什么都不理～ :p
+这个扩展恰好处在中间立场——它可以保存你上次会话最后访问的那些页签（可使用Google账户进行跨机器的同步）。你可以使用空页面（或其它）作为你的首页，而不失快速访问上次未读完的页面的便利。当然，你也可以选择什么都不理～ :p
 
-而对于那些显得稍微长的页面，你还可以在页面右键“关闭并暂存当前页”，以便稍后再继续阅读。
+而对于那些显得稍微长的页面，你还可以在页面右键“稍后再看”，以便稍后再继续阅读。
 
 它不会干扰你正常的工作，而且会自动在你需要它的时候出现。
 
@@ -12,9 +12,9 @@ Chrome默认的会话恢复机制中，只有全部打开上次访问的页面�
 
 Chrome默認的會話恢復機制中，只有全部打開上次訪問的頁面或打開空的新頁簽。作為懶人，一次打開全部頁面會令到自己倍感壓力，而空的新頁簽卻只有上次訪問的“N個頁簽”這個選項，最終還是要一次性打開所有頁面。
 
-這個擴展恰好處在中間立場，它可以保存你上次會話最後訪問的那些頁簽（會使用Google賬戶進行跨機器的同步）。你可以使用空頁面（或其它）作為你的首頁，而不失快速訪問上次未讀完的頁面的便利。當然，你也可以選擇什麼都不理～ :p
+這個擴展恰好處在中間立場，它可以保存你上次會話最後訪問的那些頁簽（可使用Google賬戶進行跨機器的同步）。你可以使用空頁面（或其它）作為你的首頁，而不失快速訪問上次未讀完的頁面的便利。當然，你也可以選擇什麼都不理～ :p
 
-而對於那些顯得稍微長的頁面，你還可以在頁面右鍵“關閉並暫存當前頁”，以便稍後再繼續閱讀。
+而對於那些顯得稍微長的頁面，你還可以在頁面右鍵“稍後再讀”，以便稍後再繼續閱讀。
 
 它不會干擾你正常的工作，而且會自動在你需要它的時候出現。
 
@@ -24,9 +24,9 @@ Chrome默認的會話恢復機制中，只有全部打開上次訪問的頁面�
 
 In the Chrome's default session recovery mechanism, you just can open your last session's tabs all, or none of them. As a lazy man as me, open them all will make myself feel of great pressure. Even in the empty new tab, Chrome just provides me an option to open them all, again.
 
-So, this extension just meets the requirement of listing and recording the last session's tabs (which will be synchronized through your Google Account). You can use an empty one (or others) as your home page, than you will open your last tabs one by one, slowly and gracefully. And, you can do nothing at all, of course~ :p
+So, this extension just meets the requirement of listing and recording the last session's tabs (which can be synchronized through your Google Account). You can use an empty one (or others) as your home page, than you will open your last tabs one by one, slowly and gracefully. And, you still can do nothing at all, of course~ :p
 
-For those a little bit long pages, you can right click at the page to "Close and Save this page", in order to continue further reading.
+For those a little bit long pages, you can right click at the page to "Read it later", in order to continue further reading.
 
 It won't disturb you, and will appear when you need it.
 
