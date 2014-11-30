@@ -1,4 +1,4 @@
-var CHROME_INNER_URL_PATTERN = /^chrome(-.+)?\:\/\/.+/,
+var CHROME_INNER_URL_PATTERN = /^(chrome(-.+)?|data|view\-source)\:.+/,
     LOCAL_FILE_URL_PATTERN = /^file\:\/\/.+/,
     EXTENSIONS_GALLERY_URL_PATTEN = /^https?:\/\/chrome\.google\.com\/webstore(\/.*)?$/,
     GOOGLE_WEBHP_PATTERN = /^https?:\/\/www\.google\.[\.a-z]{2,}\/webhp\?.*sourceid=chrome-instant.*/,

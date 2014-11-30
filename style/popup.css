@@ -81,6 +81,7 @@ button.clear-all-btn, button.open-all-btn {
     padding: 0px;
     margin: 8px !important;
     margin-top: 6px !important;
+    margin-bottom: 5px !important;
     display: inline-block;
     opacity: 0.5;
 }
@@ -110,7 +111,7 @@ button.clear-all-btn:hover {
 
 #head {
     font-size: 16px;
-    margin: 7px 8px 8px 8px;
+    margin: 8px;
     text-shadow: rgba(50, 50, 50, .5) 1px 1px 4px;
 }
 
